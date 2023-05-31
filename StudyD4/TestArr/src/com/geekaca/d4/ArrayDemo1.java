@@ -29,5 +29,10 @@ public class ArrayDemo1 {
         for (int i = 0; i < ages.length; i++) {
             System.out.println(i + " " + ages[i]);
         }
+        ages[1] = 99;
+        for (int i = 0;i < ages.length;i++) {
+            System.out.println(" " + ages[i] + " ");
+        }
+        System.out.println("数组最后一个元素：" + ages[ages.length - 1]);
     }
 }
