@@ -8,10 +8,10 @@ public class CountScore {
         int[] scores = new int[6];
         for (int i = 0; i < 6; i++) {
             System.out.println("请第" + (i + 1) + "位评委打分");
-                scores[i] = scanner.nextInt();
+            scores[i] = scanner.nextInt();
             if (scores[i] >= 0 && scores[i] <= 100) {
                 continue;
-            }else {
+            } else {
                 System.out.println("请输入0~100之间的整数！！");
                 break;
             }
@@ -21,16 +21,16 @@ public class CountScore {
         int min = scores[0];
         for (int i = 0; i < scores.length; i++) {
             sum += scores[i];
-            if (scores[i] > max){
+            if (scores[i] > max) {
                 max = scores[i];
             }
-            if (scores[i] < min){
+            if (scores[i] < min) {
                 min = scores[i];
             }
         }
         System.out.println(max);
         System.out.println(min);
         double result = (sum - max - min) * 1.0 / (scores.length - 2);
-        System.out.println("选手的得分为：" + result);
+        System.out.println("去掉最高分" + max + "，去掉最低分" + min + "，选手的得分为：" + result);
     }
 }
