@@ -10,9 +10,9 @@ public class TestLetter {
         int charCount = 0;
         int numCount = 0;
         for (int i = 0; i < s.length(); i++) {
-            if ((s.charAt(i) >= 'A' && s.charAt(i) <= 'Z'|| (s.charAt(i)) >= 'a' && s.charAt(i) <= 'z')) {
+            if ((s.charAt(i) >= 'A' && s.charAt(i) <= 'Z') || (s.charAt(i) >= 'a' && s.charAt(i) <= 'z')) {
                 charCount++;
-            }else if (s.charAt(i) >= '0' && s.charAt(i) <= '9'){
+            } else if (s.charAt(i) >= '0' && s.charAt(i) <= '9') {
                 numCount++;
             }
         }
