@@ -1,5 +1,12 @@
 package com.geekaca.d8.testlist;
 
+/**
+ * 类 对象
+ * 把学生信息封装在了类中
+ *
+ * 类 起到了模板功能
+ * 创建的学生对象 都具有同样的结构
+ */
 public class Student {
     private String stuNo;
     private String name;
