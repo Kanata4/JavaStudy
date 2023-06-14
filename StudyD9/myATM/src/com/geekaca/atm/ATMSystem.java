@@ -15,7 +15,10 @@ public class ATMSystem {
          * 整个系统只有一份
          */
         ArrayList<Account> accountList = new ArrayList<>();
-        initAccounts(accountList);
+        //获取唯一的对象
+        AccountList object = AccountList.getInstance();
+
+        object.initAccounts(accountList);
         System.out.println("======================欢迎您进入ATM系统===================");
         while (true) {
             //系统主菜单
@@ -25,16 +28,17 @@ public class ATMSystem {
             System.out.println("请您选择操作：");
             Scanner sc = new Scanner(System.in);
             //命令
-            int command = sc.nextInt();
+            SystemMenu command = SystemMenu.LOGIN;
             switch (command) {
-                case 1:
+                case LOGIN:
                     //登录
                     login(accountList, sc);
                     break;
-                case 2:
+                case REGISTER:
                     //注册（拓展）
+                    register(accountList,sc);
                     break;
-                case 3:
+                case ESC:
                     //退出
                     System.exit(0);
                     break;
@@ -43,6 +47,10 @@ public class ATMSystem {
                     break;
             }
         }
+    }
+
+    private static void register(ArrayList<Account> accountList, Scanner sc) {
+
     }
 
     /**
@@ -339,34 +347,5 @@ public class ATMSystem {
         System.out.println("取现额度：" + acc.getQuotaMoney());
     }
 
-    /**
-     * 初始化
-     *
-     * @param accountList 要把创建的账户对象存入 指定的集合
-     */
-    private static void initAccounts(ArrayList<Account> accountList) {
-        Account account = new Account();
-        account.setUserName("zhangsan");
-        account.setPassWord("abc123");
-        account.setCardId("ICBC987654321");
-        account.setMoney(30000);
-        account.setQuotaMoney(4000);
-        accountList.add(account);
 
-        Account account2 = new Account();
-        account2.setUserName("zhangwei");
-        account2.setPassWord("abc123");
-        account2.setCardId("54321");
-        account2.setMoney(1000);
-        account2.setQuotaMoney(4000);
-        accountList.add(account2);
-
-        Account account3 = new Account();
-        account3.setUserName("qiudaoyu");
-        account3.setPassWord("abc123");
-        account3.setCardId("98765");
-        account3.setMoney(1000);
-        account3.setQuotaMoney(4000);
-        accountList.add(account3);
-    }
 }
