@@ -3,7 +3,22 @@ package com.geekaca.atm;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import static com.geekaca.atm.AccountSys.ACC_INSTANCE;
+
 public class ATMSystem {
+    private static final int MAIN_MENU_LOGIN = 1;
+    private static final int MAIN_MENU_REGISTER = 2;
+    private static final int MAIN_MENU_EXIT = 3;
+
+    private static final int USER_MENU_QUERY = 1;
+    private static final int USER_MENU_SAVEMONEY = 2;
+    private static final int USER_MENU_GETMONEY = 3;
+    private static final int USER_MEMU_TRANSFORMONEY = 4;
+    private static final int USER_MEMU_REWRITEPASSWD = 5;
+    private static final int USER_MEMU_EXIT = 6;
+    private static final int USER_MEMU_DELETE = 7;
+
+
     public static void main(String[] args) {
 //        String str = "张维";
 //        str.startsWith("张");
@@ -14,11 +29,8 @@ public class ATMSystem {
          *
          * 整个系统只有一份
          */
-        ArrayList<Account> accountList = new ArrayList<>();
         //获取唯一的对象
-        AccountList object = AccountList.getInstance();
-
-        object.initAccounts(accountList);
+        initAccounts(ACC_INSTANCE.accounts);
         System.out.println("======================欢迎您进入ATM系统===================");
         while (true) {
             //系统主菜单
@@ -28,17 +40,18 @@ public class ATMSystem {
             System.out.println("请您选择操作：");
             Scanner sc = new Scanner(System.in);
             //命令
-            SystemMenu command = SystemMenu.LOGIN;
+            int command = sc.nextInt();
+            ArrayList accountList = ACC_INSTANCE.accounts;
             switch (command) {
-                case LOGIN:
+                case MAIN_MENU_LOGIN:
                     //登录
-                    login(accountList, sc);
+                    login(sc);
                     break;
-                case REGISTER:
+                case MAIN_MENU_REGISTER:
                     //注册（拓展）
-                    register(accountList,sc);
+                    register(sc);
                     break;
-                case ESC:
+                case MAIN_MENU_EXIT:
                     //退出
                     System.exit(0);
                     break;
@@ -49,17 +62,17 @@ public class ATMSystem {
         }
     }
 
-    private static void register(ArrayList<Account> accountList, Scanner sc) {
+    private static void register(Scanner sc) {
 
     }
 
     /**
      * 登录
      *
-     * @param accountsList 存了所有账户的集合
+     * @param
      * @param sc           键盘路人
      */
-    public static void login(ArrayList<Account> accountsList, Scanner sc) {
+    public static void login(Scanner sc) {
         System.out.println("=======================欢迎来到登陆界面==================");
         /**
          * 当用户名密码输入正确，那么继续下一环节，下一个菜单
@@ -78,6 +91,8 @@ public class ATMSystem {
              */
             //保存是否登录成功
             boolean isLoginOk = false;
+            //定义一个变量指向 单一实例的属性
+            ArrayList<Account> accountsList = ACC_INSTANCE.accounts;
             for (int i = 0; i < accountsList.size(); i++) {
                 //acc指向每个Account对象
                 Account acc = accountsList.get(i);
@@ -88,7 +103,7 @@ public class ATMSystem {
                     isLoginOk = true;
                     System.out.println("登录成功，请进行下一步操作");
                     //展示用户的主菜单
-                    showUserMenu(accountsList, sc, acc);
+                    showUserMenu(sc, acc);
                     return;//直接退出方法
                 }
             }
@@ -102,11 +117,10 @@ public class ATMSystem {
     /**
      * 展示用户主菜单
      *
-     * @param accountsList 所有账户的集合
      * @param sc           键盘录入
      * @param acc          你的账户
      */
-    private static void showUserMenu(ArrayList<Account> accountsList, Scanner sc, Account acc) {
+    private static void showUserMenu(Scanner sc, Account acc) {
         while (true) {
             System.out.println("==================欢迎您进入到操作界面======================");
             System.out.println("1、查询");
@@ -118,32 +132,33 @@ public class ATMSystem {
             System.out.println("7、注销账户");
             System.out.println("请您输入操作命令：");
             int command = sc.nextInt();
+            ArrayList<Account> accountsList = ACC_INSTANCE.accounts;
             switch (command) {
-                case 1:
+                case USER_MENU_QUERY:
                     //查询
                     showAccount(acc);
                     break;
-                case 2:
+                case USER_MENU_SAVEMONEY:
                     //存款
                     saveMoney(acc, sc);
                     break;
-                case 3:
+                case USER_MENU_GETMONEY:
                     //取款
                     drawMoney(acc, sc);
                     break;
-                case 4:
+                case USER_MEMU_TRANSFORMONEY:
                     //转账
-                    transferMoney(acc,accountsList,sc);
+                    transferMoney(acc,sc);
                     break;
-                case 5:
+                case USER_MEMU_REWRITEPASSWD:
                     //修改密码
                     rewritePasswd(acc, sc);
-                case 6:
+                case USER_MEMU_EXIT:
                     //退出
                     return;
-                case 7:
+                case USER_MEMU_DELETE:
                     //注销账户
-                    deleteAccount(accountsList, acc, sc);
+                    deleteAccount(acc, sc);
                 default:
                     System.out.println("输入有误");
                     break;
@@ -153,13 +168,13 @@ public class ATMSystem {
 
     /**
      *
-     * @param accountsList
      * @param acc
      * @param sc
      */
-    private static void deleteAccount(ArrayList<Account> accountsList, Account acc, Scanner sc) {
+    private static void deleteAccount(Account acc, Scanner sc) {
         System.out.println("---用户注销---");
         System.out.println("警告：再次输入密码注销用户");
+        ArrayList<Account> accountsList = ACC_INSTANCE.accounts;
         while (true) {
             String Passwd = sc.next();
             if (Passwd.equals(acc.getPassWord())) {
@@ -203,12 +218,12 @@ public class ATMSystem {
     /**
      * 转账
      * @param acc 你的账户 对象
-     * @param accountsList 所有账户 集合
      * @param sc 键盘录入 对象
      */
-    private static void transferMoney(Account acc, ArrayList<Account> accountsList, Scanner sc) {
+    private static void transferMoney(Account acc, Scanner sc) {
         //判断系统中账户数量＞2
         //防御式编程， 先把所有不合理的情况拦截
+        ArrayList<Account> accountsList = ACC_INSTANCE.accounts;
         if (accountsList.size() < 2) {
             System.out.println("系统中没有其他账户，无法转账！");
             return;
@@ -347,5 +362,30 @@ public class ATMSystem {
         System.out.println("取现额度：" + acc.getQuotaMoney());
     }
 
+    public static void initAccounts(ArrayList<Account> accountList) {
+        Account account = new Account();
+        account.setUserName("zhangsan");
+        account.setPassWord("abc123");
+        account.setCardId("ICBC987654321");
+        account.setMoney(30000);
+        account.setQuotaMoney(4000);
+        accountList.add(account);
+
+        Account account2 = new Account();
+        account2.setUserName("zhangwei");
+        account2.setPassWord("abc123");
+        account2.setCardId("54321");
+        account2.setMoney(1000);
+        account2.setQuotaMoney(4000);
+        accountList.add(account2);
+
+        Account account3 = new Account();
+        account3.setUserName("qiudaoyu");
+        account3.setPassWord("abc123");
+        account3.setCardId("98765");
+        account3.setMoney(1000);
+        account3.setQuotaMoney(4000);
+        accountList.add(account3);
+    }
 
 }
