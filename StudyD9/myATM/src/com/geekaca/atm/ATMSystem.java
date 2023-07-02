@@ -1,6 +1,7 @@
 package com.geekaca.atm;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Scanner;
 
 import static com.geekaca.atm.AccountSys.ACC_INSTANCE;
@@ -30,7 +31,7 @@ public class ATMSystem {
          * 整个系统只有一份
          */
         //获取唯一的对象
-        initAccounts(ACC_INSTANCE.accounts);
+        initAccounts(ACC_INSTANCE.accountsMap);
         System.out.println("======================欢迎您进入ATM系统===================");
         while (true) {
             //系统主菜单
@@ -70,7 +71,7 @@ public class ATMSystem {
      * 登录
      *
      * @param
-     * @param sc           键盘路人
+     * @param sc           键盘录入
      */
     public static void login(Scanner sc) {
         System.out.println("=======================欢迎来到登陆界面==================");
@@ -92,21 +93,26 @@ public class ATMSystem {
             //保存是否登录成功
             boolean isLoginOk = false;
             //定义一个变量指向 单一实例的属性
-            ArrayList<Account> accountsList = ACC_INSTANCE.accounts;
-            for (int i = 0; i < accountsList.size(); i++) {
-                //acc指向每个Account对象
-                Account acc = accountsList.get(i);
-                //判断当前对象的用户名密码 是否和用户输入的对应
-                //用户输入的卡号，密码，值是否相等(String 判断值相等 不要用== 要用.equals())
-                if (cardNum.equals(acc.getCardId()) && passwd.equals(acc.getPassWord())) {
-                    //说明登录成功,当前Account对象就是你的账户
-                    isLoginOk = true;
-                    System.out.println("登录成功，请进行下一步操作");
-                    //展示用户的主菜单
-                    showUserMenu(sc, acc);
+            Map<String,Account> accountsMap = ACC_INSTANCE.accountsMap;
+            //卡号是否存在
+            boolean isExsistCardId = accountsMap.containsKey(cardNum);
+            if (isExsistCardId){
+                Account account = accountsMap.get(cardNum);
+                if (passwd.equals(account.getPassWord())){
+                    //说明登陆成功
+                    System.out.println("登陆成功");
+                    showUserMenu(sc, account);
                     return;//直接退出方法
+                }else {
+                    //说明密码错误
+                    System.out.println("登陆失败");
                 }
+            }else {
+                //说明卡号错误
             }
+            /**
+             * 现根据卡号找到账户 然后判断密码是否正确
+             */
             //到这里 如果没有找到能够匹配的对象，则说明 登录失败
             if (!isLoginOk) {
                 System.out.println("登录失败");
@@ -223,8 +229,8 @@ public class ATMSystem {
     private static void transferMoney(Account acc, Scanner sc) {
         //判断系统中账户数量＞2
         //防御式编程， 先把所有不合理的情况拦截
-        ArrayList<Account> accountsList = ACC_INSTANCE.accounts;
-        if (accountsList.size() < 2) {
+        Map<String, Account> accountsMap = AccountSys.ACC_INSTANCE.accountsMap;
+        if (accountsMap.size() < 2) {
             System.out.println("系统中没有其他账户，无法转账！");
             return;
         }
@@ -242,7 +248,7 @@ public class ATMSystem {
          * 存在 则返回对方的账户对象
          * 不存在，则提示
          */
-        Account accountByCardId = getAccountByCardId(accountsList, hisCardId);
+        Account accountByCardId = getAccountByCardId(accountsMap, hisCardId);
         if (accountByCardId == null) {
             System.out.println("没有这个卡号" + hisCardId);
             return;
@@ -279,20 +285,11 @@ public class ATMSystem {
 
     /**
      * 在系统（集合）中查找 指定的卡号
-     * @param accountList
      * @param cardId
      * @return 账户对象
      */
-    private static Account getAccountByCardId(ArrayList<Account> accountList,String cardId) {
-        for (int i = 0; i < accountList.size(); i++) {
-            Account ac = accountList.get(i);
-            if (cardId.equals(ac.getCardId())){
-                //找到了一个卡号和输入的cardId一致的 立即返回账户对象
-                return ac;
-            }
-        }
-        //经过了上面的循环 都没有找到，就说明没有这个卡号
-        return null;
+    private static Account getAccountByCardId(Map<String, Account> accountMap, String cardId) {
+        return  accountMap.get(cardId);
     }
 
     /**
@@ -362,14 +359,14 @@ public class ATMSystem {
         System.out.println("取现额度：" + acc.getQuotaMoney());
     }
 
-    public static void initAccounts(ArrayList<Account> accountList) {
+    public static void initAccounts(Map<String, Account> accountMap) {
         Account account = new Account();
         account.setUserName("zhangsan");
         account.setPassWord("abc123");
         account.setCardId("ICBC987654321");
         account.setMoney(30000);
         account.setQuotaMoney(4000);
-        accountList.add(account);
+        accountMap.put(account.getCardId(),account);
 
         Account account2 = new Account();
         account2.setUserName("zhangwei");
@@ -377,7 +374,7 @@ public class ATMSystem {
         account2.setCardId("54321");
         account2.setMoney(1000);
         account2.setQuotaMoney(4000);
-        accountList.add(account2);
+        accountMap.put(account2.getCardId(),account2);
 
         Account account3 = new Account();
         account3.setUserName("qiudaoyu");
@@ -385,7 +382,7 @@ public class ATMSystem {
         account3.setCardId("98765");
         account3.setMoney(1000);
         account3.setQuotaMoney(4000);
-        accountList.add(account3);
+        accountMap.put(account3.getCardId(),account3);
     }
 
 }
