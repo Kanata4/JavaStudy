@@ -26,7 +26,8 @@ public class TestClient {
                 System.out.println("服务器信息：" + mess);
                 break;
             }
-            //客户端接收用户的键盘录入
+            //客户端缺少一个 接受server的信息的逻辑 要依赖多线程
+            new ClientReaderThread(socket).start();
             while (true){
                 System.out.println("请输入信息：");
                 String input = scanner.next();
