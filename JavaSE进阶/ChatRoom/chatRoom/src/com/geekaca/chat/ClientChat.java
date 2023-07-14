@@ -4,11 +4,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+/**
+ * chat客户端
+ *
+ * 此类 充当按钮事件监听器 角色
+ */
 public class ClientChat implements ActionListener {
     /**
      * 1.设计界面  ,窗口
@@ -18,16 +24,16 @@ public class ClientChat implements ActionListener {
      * 2.消息内容框架  多行输入框
      * 用于显示 当前聊天内容列表
      */
-    public JTextArea smsContent = new JTextArea(23,50);
+    public JTextArea smsContent = new JTextArea(23, 50);
     /**
-     * 3.发送消息的框
+     * 3.发送消息的输入框
      */
-    private JTextArea smsSend = new JTextArea(4,40);
+    private JTextArea smsSend = new JTextArea(4, 40);
     /**
      * 展示在线人数 昵称的窗口
      */
-    public JList<String> onLineUsersList = new JList<>();
-    //消息按钮
+    public JList<String> onLineUsersJList = new JList<>();
+    // 消息按钮
     private JButton sendBn = new JButton("发送");
     // 是否私聊按钮
     private JCheckBox isPrivateBn = new JCheckBox("私聊");
@@ -35,6 +41,10 @@ public class ClientChat implements ActionListener {
     private JFrame loginView;
     //登陆界面 的ip输入，昵称输入
     private JTextField ipEt, nameEt;
+    /**
+     * 成员变量，方便类内部函数 来使用
+     */
+    private Socket socket;
 
     public static void main(String[] args) {
         ClientChat clientChat = new ClientChat();
@@ -50,6 +60,8 @@ public class ClientChat implements ActionListener {
 
         /** 展示聊天界面 */
         //displayChatView();
+
+
     }
 
     /**
@@ -72,6 +84,7 @@ public class ClientChat implements ActionListener {
         ip.add(label);
         //输入框
         ipEt = new JTextField(20);
+        ipEt.setText("127.0.0.1");
         ip.add(ipEt);
         loginView.add(ip);
         //放名字的面板panel
@@ -85,8 +98,8 @@ public class ClientChat implements ActionListener {
         JPanel btnView = new JPanel();
         JButton login = new JButton("登陆");
         btnView.add(login);
-        JButton cancle = new JButton("取消");
-        btnView.add(cancle);
+        JButton cancel = new JButton("取消");
+        btnView.add(cancel);
         loginView.add(btnView);
         // 关闭窗口退出当前程序
         loginView.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -97,7 +110,7 @@ public class ClientChat implements ActionListener {
          * 点击按钮后 谁负责处理
          * */
         login.addActionListener(this);
-        cancle.addActionListener(this);
+        cancel.addActionListener(this);
     }
     private static void setWindowCenter(JFrame frame, int width, int height, boolean flag) {
         /** 得到所在系统所在屏幕的宽高 */
@@ -137,10 +150,12 @@ public class ClientChat implements ActionListener {
                  * 如果都符合条件了
                  * 继续连接
                  */
+
                 win.setTitle(name);
                 try{
-                    Socket socket = new Socket(ipStr, ChatConstants.PORT);
-                    new Thread(new ClientReader(socket,this)).start();
+                    socket = new Socket(ipStr, ChatConstants.PORT);
+                    //客户端只需要一个线程
+                    new Thread(new ClientReader(socket, this)).start();
                     //需要不断读取 来自server的信息 ，如果此处直接写while(true) 死循环
                     //读取server的数据，就会导致把cpu抱住不让走，
                     /**
@@ -155,6 +170,7 @@ public class ClientChat implements ActionListener {
                     // 关系当前窗口 弹出聊天界面
                     loginView.dispose(); // 登录窗口销毁
                     displayChatView(); // 展示了聊天窗口了
+
                 } catch (UnknownHostException unknownHostException) {
                     unknownHostException.printStackTrace();
                 } catch (IOException ioException) {
@@ -164,6 +180,31 @@ public class ClientChat implements ActionListener {
             case "取消":
                 /** 退出系统, 退出整个程序 */
                 System.exit(0);
+                break;
+            case "发送":
+                //获取聊天输入框的内容
+                String chatContent = smsSend.getText();
+                //.trim() 删除字符串前后的空格
+                if (chatContent == null || "".equals(chatContent.trim())){
+                    System.out.println("聊天内容不能为空!");
+                    return;
+                }
+                //打开socket输出流，发消息
+                if(socket != null){
+
+                    try {
+                        //socket不要关闭，也不要关闭IO流，保持一直连接
+                        OutputStream ops = socket.getOutputStream();
+                        DataOutputStream dos = new DataOutputStream(ops);
+                        //发消息类型
+                        dos.writeInt(ChatConstants.MSG_TYPE_CHAT);
+                        dos.writeUTF(chatContent);
+                        dos.flush();
+                    } catch (IOException ioException) {
+                        System.out.println("发送异常:"+ioException.getMessage());
+                        ioException.printStackTrace();
+                    }
+                }
                 break;
         }
     }
@@ -192,9 +233,9 @@ public class ClientChat implements ActionListener {
         //-----------------------------------------------
         // 用户列表和是否私聊放到窗口的最右边
         Box rightBox = new Box(BoxLayout.Y_AXIS);
-        onLineUsersList.setFixedCellWidth(120);
-        onLineUsersList.setVisibleRowCount(13);
-        rightBox.add(new JScrollPane(onLineUsersList));
+        onLineUsersJList.setFixedCellWidth(120);
+        onLineUsersJList.setVisibleRowCount(13);
+        rightBox.add(new JScrollPane(onLineUsersJList));
         win.add(rightBox, BorderLayout.EAST);
         //-----------------------------------------------
         // 关闭窗口退出当前程序
@@ -204,5 +245,7 @@ public class ClientChat implements ActionListener {
         setWindowCenter(win, 650, 600, true);
         // 发送按钮绑定点击事件
         sendBn.addActionListener(this);
+        //点击发送后 清空聊天框
+
     }
 }

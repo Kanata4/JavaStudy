@@ -2,6 +2,7 @@ package com.geekaca.chat.test;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class TestSwing {
     public static void main(String[] args) {
@@ -11,6 +12,9 @@ public class TestSwing {
 //        TestSwing testSwing = new TestSwing();
 //        testSwing.init();
         MyFrame myFrame = new MyFrame();
+//        String str = "tom@@@jack@@@i";
+//        String[] splitedStr = str.split("@@@");
+//        System.out.println(Arrays.toString(splitedStr));
     }
 
     public void init(){
