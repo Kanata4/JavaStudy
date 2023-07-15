@@ -136,77 +136,93 @@ public class ClientChat implements ActionListener {
         JButton btn = (JButton) e.getSource();//触发事件的源头
         switch (btn.getText()) {
             case "登陆":
-                /**
-                 * 从输入框拿到输入的信息
-                 */
-                String ipStr = ipEt.getText().toString();
-                String name = nameEt.getText().toString();//昵称
-                //连接serversocket
-                /**
-                 * todo: 验证 服务器的ip地址是否符合要求   校验IP地址格式 最多3位数字（最少1位）.3位数字.3位数字.3位数字
-                 * \\d{1,3}
-                 * 昵称  不能为空，不能全是空格
-                 *
-                 * 如果都符合条件了
-                 * 继续连接
-                 */
-
-                win.setTitle(name);
-                try{
-                    socket = new Socket(ipStr, ChatConstants.PORT);
-                    //客户端只需要一个线程
-                    new Thread(new ClientReader(socket, this)).start();
-                    //需要不断读取 来自server的信息 ，如果此处直接写while(true) 死循环
-                    //读取server的数据，就会导致把cpu抱住不让走，
-                    /**
-                     * readme.txt  4
-                     * 马上发送客户的昵称给server
-                     * 消息类型： 登陆
-                     */
-                    DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                    dataOutputStream.writeInt(ChatConstants.MSG_TYPE_LOGIN);
-                    dataOutputStream.writeUTF(name);
-                    dataOutputStream.flush();
-                    // 关系当前窗口 弹出聊天界面
-                    loginView.dispose(); // 登录窗口销毁
-                    displayChatView(); // 展示了聊天窗口了
-
-                } catch (UnknownHostException unknownHostException) {
-                    unknownHostException.printStackTrace();
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
+                doLogin();
                 break;
             case "取消":
                 /** 退出系统, 退出整个程序 */
                 System.exit(0);
                 break;
             case "发送":
-                //获取聊天输入框的内容
-                String chatContent = smsSend.getText();
-                //.trim() 删除字符串前后的空格
-                if (chatContent == null || "".equals(chatContent.trim())){
-                    System.out.println("聊天内容不能为空!");
-                    return;
-                }
-                //打开socket输出流，发消息
-                if(socket != null){
-
-                    try {
-                        //socket不要关闭，也不要关闭IO流，保持一直连接
-                        OutputStream ops = socket.getOutputStream();
-                        DataOutputStream dos = new DataOutputStream(ops);
-                        //发消息类型
-                        dos.writeInt(ChatConstants.MSG_TYPE_CHAT);
-                        dos.writeUTF(chatContent);
-                        dos.flush();
-                    } catch (IOException ioException) {
-                        System.out.println("发送异常:"+ioException.getMessage());
-                        ioException.printStackTrace();
-                    }
-                }
+                doSend();
                 break;
         }
+    }
+    private void doLogin(){
+        /**
+         * 从输入框拿到输入的信息
+         */
+        String ipStr = ipEt.getText().toString();
+        String name = nameEt.getText().toString();//昵称
+        //连接serversocket
+        /**
+         * todo: 验证 服务器的ip地址是否符合要求   校验IP地址格式 最多3位数字（最少1位）.3位数字.3位数字.3位数字
+         * \\d{1,3}
+         * 昵称  不能为空，不能全是空格
+         *
+         * 如果都符合条件了
+         * 继续连接
+         */
+
+        //错误提示
+        String msg = "";
+        boolean isIpOk = ipStr.matches("\\d{1,3}\\.\\d{1,3}.\\d{1,3}\\.\\d{1,3}");
+        if(!isIpOk){
+            msg = "IP地址不符合规则";
+        } else if (name == null || ("".equals(name.trim()))){
+            msg = "用户昵称不符合要求";
+        }
+        win.setTitle(name);
+        try{
+            socket = new Socket(ipStr, ChatConstants.PORT);
+            //客户端只需要一个线程
+            new Thread(new ClientReader(socket, this)).start();
+            //需要不断读取 来自server的信息 ，如果此处直接写while(true) 死循环
+            //读取server的数据，就会导致把cpu抱住不让走，
+            /**
+             * readme.txt  4
+             * 马上发送客户的昵称给server
+             * 消息类型： 登陆
+             */
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            dataOutputStream.writeInt(ChatConstants.MSG_TYPE_LOGIN);
+            dataOutputStream.writeUTF(name);
+            dataOutputStream.flush();
+            // 关系当前窗口 弹出聊天界面
+            loginView.dispose(); // 登录窗口销毁
+            displayChatView(); // 展示了聊天窗口了
+
+        } catch (UnknownHostException unknownHostException) {
+            unknownHostException.printStackTrace();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+    }
+
+    private void doSend(){
+        //获取聊天输入框的内容
+        String chatContent = smsSend.getText();
+        //.trim() 删除字符串前后的空格
+        if (chatContent == null || "".equals(chatContent.trim())){
+            System.out.println("聊天内容不能为空!");
+            return;
+        }
+        //打开socket输出流，发消息
+        if(socket != null){
+            try {
+                //socket不要关闭，也不要关闭IO流，保持一直连接
+                OutputStream ops = socket.getOutputStream();
+                DataOutputStream dos = new DataOutputStream(ops);
+                //发消息类型
+                dos.writeInt(ChatConstants.MSG_TYPE_CHAT);
+                dos.writeUTF(chatContent);
+                dos.flush();
+            } catch (IOException ioException) {
+                System.out.println("发送异常:"+ioException.getMessage());
+                ioException.printStackTrace();
+            }
+        }
+        //清空聊天输入框
+        smsSend.setText(null);
     }
 
     /**
