@@ -5,7 +5,7 @@ public class ChatConstants {
      *  final  不可修改
      *  static  静态为了 方便使用
      * */
-    public static final int PORT = 7779 ;
+    public static final int PORT = 7771 ;
 
     /**
      * 用户登录
@@ -19,6 +19,10 @@ public class ChatConstants {
      * 大厅的聊天
      */
     public static final int MSG_TYPE_CHAT = 2;
+    /**
+     * 私聊
+     */
+    public static final int MSG_TYPE_CHAT_PRIVATE = 3;
     /**
      * 协议分隔符
      * 自定义

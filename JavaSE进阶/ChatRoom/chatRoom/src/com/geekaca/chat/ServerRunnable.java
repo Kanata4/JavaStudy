@@ -62,10 +62,21 @@ public class ServerRunnable implements Runnable {
                         LocalDateTime now = LocalDateTime.now();
                         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                         toSendMsg.append(now.format(dtf)).append("  ").append(userNickName).append("  ")
-                        .append("\n" + msgContent).append("\n");
+                        .append("\r\n" + msgContent).append("\r\n");
                         System.out.println("sendMsgToOther： " + toSendMsg);
                         sendMsgToOther(toSendMsg.toString());
                         break;
+                    case ChatConstants.MSG_TYPE_CHAT_PRIVATE:
+                            //私聊
+                            /**
+                             * 服务端
+                             * 取出 收信人和内容
+                             * 找到收信人 单独给他发消息
+                             */
+                            String toNickName = dis.readUTF();
+                            String msgCt = dis.readUTF();
+                            sendChatToOne(toNickName,msgCt);
+                            break;
                 }
 
             }
@@ -73,6 +84,36 @@ public class ServerRunnable implements Runnable {
             System.out.println("发生异常" + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 给某个人单独发消息
+     * @param toNickName 目标用户
+     * @param msgCt
+     */
+    private void sendChatToOne(String toNickName, String msgCt) {
+        /**
+         * 根据昵称找到 对应的socket 找到目标接收者
+         * Tom 对你说：你好 2023-09-09 12：20：23
+         */
+        ServerChat.onLineSocketMap.forEach((socket,nickname) ->{
+            if (nickname.equals(toNickName)){
+                try {
+                    OutputStream ops = socket.getOutputStream();
+                    DataOutputStream dos = new DataOutputStream(ops);
+                    //和发送大厅聊天协议格式没区别 只是内容有区别
+                    dos.writeInt(ChatConstants.MSG_TYPE_CHAT);
+                    StringBuilder sb = new StringBuilder();
+                    String curNickname = ServerChat.onLineSocketMap.get(clientSocket);
+                    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    LocalDateTime now = LocalDateTime.now();
+                    sb.append(curNickname + "对你说：" + msgCt + " " + now.format(dtf) + "\r\n");
+                    dos.writeUTF(sb.toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } );
     }
 
     /**

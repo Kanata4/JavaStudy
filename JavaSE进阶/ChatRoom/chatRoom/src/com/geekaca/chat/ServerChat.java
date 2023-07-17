@@ -5,6 +5,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 服务端
@@ -22,6 +25,7 @@ public class ServerChat {
      * socket3:  Jack
      */
     public static Map<Socket, String> onLineSocketMap = new HashMap<>();
+    //线程池 ctrl+q 查看函数参数
 
     public static void main(String[] args) {
 

@@ -143,10 +143,52 @@ public class ClientChat implements ActionListener {
                 System.exit(0);
                 break;
             case "发送":
+                boolean isChecked = this.isPrivateBn.isSelected();
+                if(isChecked){
+                    doSendPrivate();
+                } else {
+                    doSend();
+                }
                 doSend();
                 break;
         }
     }
+    //发送私聊
+    private void doSendPrivate() {
+        //获取聊天输入框的内容
+        String chatContent = smsSend.getText();
+        //.trim() 删除字符串前后的空格
+        if (chatContent == null || "".equals(chatContent.trim())){
+            System.out.println("聊天内容不能为空!");
+            return;
+        }
+        smsSend.setText(null);
+        //界面用户昵称列表中选中了谁
+        String toNickname = this.onLineUsersJList.getSelectedValue();
+        /**
+         * 协议格式
+         * writeInt（3）
+         * writeUTF（对方昵称）
+         * writeUTF（聊天内容）
+         *
+         */
+        if (socket != null){
+            //不能try(){} try-with-resource 自动关闭
+            try{
+                OutputStream ops = socket.getOutputStream();
+                DataOutputStream dos = new DataOutputStream(ops);
+                dos.writeInt(ChatConstants.MSG_TYPE_CHAT_PRIVATE);
+                dos.writeUTF(toNickname);
+                dos.writeUTF(chatContent);
+                dos.flush();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //不能关闭dos 会把底层的socket也关闭掉
+        }
+    }
+
     private void doLogin(){
         /**
          * 从输入框拿到输入的信息
