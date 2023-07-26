@@ -35,7 +35,7 @@ public class Demo1 {
         // 6.解析结果集，模糊查询有可能查到很多条数据，所以定义集合存储
         List<Emp> empList=new ArrayList<>();
         while (rs.next()){
-            Emp emp=new Emp();
+            Emp emp = new Emp();
             //通过rs根据字段名获取数据库表中的数据，然后把数据封装到Student对象中
             emp.setEmpName(rs.getString("name"));
             emp.setEmpMoney(rs.getInt("money"));

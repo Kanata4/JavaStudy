@@ -1,3 +1,5 @@
 *.class
 .idea/
 *.iml
+*.jar
+JDBC/studyJDBC/studyJDBC/druid.properties
