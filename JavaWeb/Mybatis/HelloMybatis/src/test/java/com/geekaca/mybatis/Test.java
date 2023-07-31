@@ -18,7 +18,7 @@ import java.util.Map;
 public class Test {
     @org.junit.Test
     public void testSelectAll() throws IOException {
-        //1.获取SqlsessionFactory
+        //1.获取SqlsessionFactory session 会话
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
@@ -31,7 +31,9 @@ public class Test {
 
         //4.执行方法
         List<Brand> brands = brandMapper.selectAll();
-        System.out.println(brands);
+        brands.forEach(brand -> {
+            System.out.println(brand);
+        });
 
         //5.释放资源
         sqlSession.close();
@@ -88,7 +90,9 @@ public class Test {
         map.put("companyName", companyName);
         map.put("brandName", brandName);
         List<Brand> brands = brandMapper.selectByCondition(map);
-        System.out.println(brands);
+        brands.forEach(brand -> {
+            System.out.println(brand);
+        });
 
         //5.释放资源
         sqlSession.close();
@@ -97,31 +101,21 @@ public class Test {
     @org.junit.Test
     public void testSelectByConditionSingle() throws IOException {
         //接收参数
-        int status = 1;
-        String companyName = "华为";
-        String brandName = "华为";
-
-        //处理参数
-        companyName = "%" + companyName + "%";
-        brandName = "%" + brandName + "%";
-
+        String companyName = "华";
         //封装对象
         Brand brand = new Brand();
         brand.setCompanyName(companyName);
-
         //1.获取SqlSessionFactory
         String resource = "mybatis-config.xml";
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-
         //2.获取SqlSession对象
         SqlSession sqlSession = sqlSessionFactory.openSession();
-
         //3.获取Mapper接口的代理对象
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
-
         //4.执行方法
         List<Brand> brands = brandMapper.selectByConditionSingle(brand);
+        System.out.println(brand);
         System.out.println(brands);
 
         //5.释放资源
@@ -132,9 +126,9 @@ public class Test {
     public void testAdd() throws IOException {
         //接收参数
         int status = 1;
-        String companyName = "波导手机";
-        String brandName = "波导";
-        String description = "手机中的战斗机";
+        String companyName = "大波导手机";
+        String brandName = "大波导";
+        String description = "大手机中的战斗机";
         int ordered = 100;
 
         //封装对象
@@ -150,14 +144,18 @@ public class Test {
         InputStream inputStream = Resources.getResourceAsStream(resource);
         SqlSessionFactory sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         //2. 获取SqlSession对象
-        SqlSession sqlSession = sqlSessionFactory.openSession();
+//        SqlSession sqlSession = sqlSessionFactory.openSession();
+        //打开事务的自动提交
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
 
         //3. 获取Mapper接口的代理对象
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
         //4. 执行方法
-        brandMapper.add(brand);
+        int inserted = brandMapper.add(brand);
+        System.out.println("执行后 影响的条数" + inserted);
+        //Mybatis 默认事务是需要手动提交的
         //提交事务
-        sqlSession.commit();
+//        sqlSession.commit();
         //5. 释放资源
         sqlSession.close();
     }
@@ -170,7 +168,7 @@ public class Test {
         String brandName = "波导";
         String description = "波导手机,手机中的战斗机";
         int ordered = 200;
-        int id = 6;
+        int id = 3;
         //封装对象
         Brand brand = new Brand();
         brand.setStatus(status);
@@ -185,8 +183,8 @@ public class Test {
         //3. 获取Mapper接口的代理对象
         BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
         //4. 执行方法
-//        int count = brandMapper.update(brand);
-//        System.out.println(count);
+        int count = brandMapper.update(brand);
+        System.out.println(count);
         //提交事务
         sqlSession.commit();
         //5. 释放资源

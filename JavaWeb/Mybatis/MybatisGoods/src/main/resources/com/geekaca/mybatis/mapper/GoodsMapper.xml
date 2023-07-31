@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    namespace:名称空间
+    告诉mybatis 到哪里去找mapper类
+-->
+
+
+<mapper namespace="com.geekaca.mybatis.mapper.GoodsMapper">
+
+
+    <insert id="insertGoods">
+        insert into tb_goods(id, title, price) value (#{id},#{title},#{price})
+    </insert>
+
+    <select id="selectByTitle" resultType="com.geekaca.mybatis.pojo.Goods">
+        select *
+        from tb_goods
+        where title like #{title};
+    </select>
+    <select id="selectByCondition" resultType="com.geekaca.mybatis.pojo.Goods">
+        select * from tb_goods
+        <where>
+            <if test="title != null and title != '' ">
+                and title like concat('%',#{title},'%')
+            </if>
+            <if test="price != null and price != '' ">
+                and price = #{price};
+            </if>
+        </where>
+    </select>
+</mapper>

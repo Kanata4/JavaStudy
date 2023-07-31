@@ -16,14 +16,15 @@
 
   通过resultMap节点，告诉mybatis如何对应
 -->
-    <resultMap id="brandResultMap" type="com.geekaca.mybatis.pojo.Brand">
+    <resultMap id="brandResultMap" type="Brand">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="brand_name" property="brandName"/>
         <result column="company_name" property="companyName"/>
     </resultMap>
+<!--    insert 时候,此处的字段 直接从POJO类拿-->
     <insert id="add" useGeneratedKeys="true" keyColumn="id">
         insert into tb_brand(brand_name, company_name, ordered, description, status)
-        value (#{brandName},#{companyName},#{ordered},#{description},#{status});
+            value (#{brandName}, #{companyName}, #{ordered}, #{description}, #{status});
     </insert>
 
     <update id="update">
@@ -48,13 +49,15 @@
     </update>
 
     <delete id="deleteById">
-        delete from tb_brand where id = #{id};
+        delete
+        from tb_brand
+        where id = #{id};
     </delete>
 
     <delete id="deleteByIds">
         delete from tb_brand where id
         in
-        <foreach collection="array" item="id" separator="," open="(" close= ")">
+        <foreach collection="array" item="id" separator="," open="(" close=")">
             #{id}
         </foreach>
         ;
@@ -69,13 +72,13 @@
         select *
         from tb_brand
     </select>
+
     <select id="selectById" resultMap="brandResultMap">
         select *
         from tb_brand
-        where id
-           <![CDATA[ <
-         ]]> #{id};
+        where id = #{id};
     </select>
+
     <select id="selectByCondition" resultMap="brandResultMap">
         select *
         from tb_brand
@@ -90,9 +93,8 @@
                 and brand_name like #{brandName};
             </if>
         </where>
-
-
     </select>
+
     <select id="selectByConditionSingle" resultMap="brandResultMap">
         select *
         from tb_brand
@@ -102,12 +104,13 @@
                     status = #{status}
                 </when>
                 <when test="companyName != null and companyName != '' ">
-                    company_name like #{companyName}
+                    company_name like concat('%', #{companyName}, '%')
                 </when>
                 <when test="brandName != null and brandName != '' ">
-                    brand_name like #{brandName}
+                    brand_name like concat('%', #{brandName}, '%')
                 </when>
             </choose>
         </where>
     </select>
+
 </mapper>

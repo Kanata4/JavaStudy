@@ -30,14 +30,14 @@ public interface BrandMapper {
      * 添加
      * @param brand
      */
-    void add(Brand brand);
+    int add(Brand brand);
 
     /**
      * 修改
      * @param brand
      * @return
      */
-    void update(Brand brand);
+    int update(Brand brand);
 
     /**
      * 根据id删除

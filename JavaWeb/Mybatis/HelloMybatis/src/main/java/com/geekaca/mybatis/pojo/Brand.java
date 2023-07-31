@@ -1,35 +1,36 @@
 package com.geekaca.mybatis.pojo;
 
 /**
- * Pojo类
- * 载体
+ * 品牌
+ *
+ * alt + 鼠标左键：整列编辑
+ *
+ * 在实体类中，基本数据类型建议使用其对应的包装类型
+ *
+ * 实体类  充当的是载体
+ * 一个Brand对象 对应 数据库中的一行记录
  */
+
 public class Brand {
-    private int id;
+    // id 主键  引用类型  当作类的属性，默认值null
+    private Integer id;
+    // 品牌名称
     private String brandName;
+    // 企业名称
     private String companyName;
-    private int ordered;
+    // 排序字段
+    private Integer ordered;
+    // 描述信息
     private String description;
-    private int status;
+    // 状态：0：禁用  1：启用
+    private Integer status;
 
-    public Brand(int id, String brandName, String companyName, int ordered, String description, int status) {
-        this.id = id;
-        this.brandName = brandName;
-        this.companyName = companyName;
-        this.ordered = ordered;
-        this.description = description;
-        this.status = status;
-    }
 
-    public Brand() {
-
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -49,11 +50,11 @@ public class Brand {
         this.companyName = companyName;
     }
 
-    public int getOrdered() {
+    public Integer getOrdered() {
         return ordered;
     }
 
-    public void setOrdered(int ordered) {
+    public void setOrdered(Integer ordered) {
         this.ordered = ordered;
     }
 
@@ -65,11 +66,11 @@ public class Brand {
         this.description = description;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
