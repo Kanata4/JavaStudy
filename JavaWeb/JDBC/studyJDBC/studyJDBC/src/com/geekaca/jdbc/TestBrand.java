@@ -17,7 +17,9 @@ public class TestBrand {
 //        testAdd();
 //        testUpdate();
         testDeleteById();
+        
     }
+
 
     //@Test
     public void testSelectALl() throws Exception {
