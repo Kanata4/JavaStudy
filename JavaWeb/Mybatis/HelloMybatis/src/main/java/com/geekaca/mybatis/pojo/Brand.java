@@ -21,6 +21,10 @@ public class Brand {
         this.status = status;
     }
 
+    public Brand() {
+
+    }
+
     public int getId() {
         return id;
     }
