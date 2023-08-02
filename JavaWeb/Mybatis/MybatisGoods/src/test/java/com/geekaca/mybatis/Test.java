@@ -1,7 +1,9 @@
 package com.geekaca.mybatis;
 
 import com.geekaca.mybatis.mapper.GoodsMapper;
+import com.geekaca.mybatis.mapper.StudentMapper;
 import com.geekaca.mybatis.pojo.Goods;
+import com.geekaca.mybatis.pojo.Student;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -14,6 +16,63 @@ import java.util.List;
 import java.util.Map;
 
 public class Test {
+
+    @org.junit.Test
+    public void testSelectByIds(){
+        int[] ids = {4,9,14};
+        SqlSession sqlSession = openSession();
+        StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
+        List<Student> students = studentMapper.selectByIds(ids);
+        System.out.println(students);
+    }
+
+    @org.junit.Test
+    public void testDeletedById(){
+        int id = 1;
+        SqlSession sqlSession = openSession();
+        StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
+        studentMapper.deleteById(id);
+        sqlSession.commit();
+        sqlSession.close();
+    }
+
+    @org.junit.Test
+    public void testLogin(){
+        SqlSession sqlSession = openSession();
+        StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
+        Student student = new Student();
+        String name = "xiaoming";
+        String pwd = "123456";
+        student.setName(name);
+        student.setPwd(pwd);
+        int cnt = studentMapper.checkLogin(student);
+        if (cnt > 0){
+            System.out.println("登录成功");
+        }else{
+            System.out.println("登陆失败");
+        }
+    }
+
+    @org.junit.Test
+    public void testUpdateById(){
+        int id = 9;
+        String updateName = "Jack11";
+        String updatePwd = "1234567";
+        int updateAge = 38;
+        int updateTel = 12398837;
+        int updateDeleted = 1;
+        int updateVersion = 2;
+        SqlSession sqlSession = openSession();
+        StudentMapper studentMapper = sqlSession.getMapper(StudentMapper.class);
+        Student student = new Student();
+        student.setName(updateName);
+        student.setId(id);
+
+        int updated = studentMapper.updateById(student);
+        System.out.println("修改的数据为:" + updated);
+        sqlSession.close();
+
+    }
 
     @org.junit.Test
     public void testSelectByCondition(){

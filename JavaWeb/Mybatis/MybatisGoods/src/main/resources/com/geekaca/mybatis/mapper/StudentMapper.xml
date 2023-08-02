@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    namespace:名称空间
+    告诉mybatis 到哪里去找mapper类
+-->
+
+
+<mapper namespace="com.geekaca.mybatis.mapper.StudentMapper">
+
+
+    <resultMap id="StudentResultMap" type="Student">
+        <!--
+            id：完成主键字段的映射
+                column：表的列名
+                property：实体类的属性名
+            result：完成一般字段的映射
+                column：表的列名
+                property：实体类的属性名
+        -->
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="pwd" property="pwd"/>
+        <result column="age" property="age"/>
+        <result column="tel" property="tel"/>
+        <result column="deleted" property="deleted"/>
+        <result column="version" property="version"/>
+    </resultMap>
+    <update id="updateById">
+        update t_user
+        <set>
+            <if test="name != null and name != '' ">
+                name = #{name},
+            </if>
+            <if test="pwd != null and pwd != '' ">
+                pwd = #{pwd},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="tel != null">
+                tel = #{tel},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+            <if test="version != null">
+                version = #{version}
+            </if>
+        </set>
+        where id = #{id};
+    </update>
+
+    <delete id="deleteById">
+        delete
+        from t_user
+        where id = #{id};
+    </delete>
+    <select id="selectByIds" resultMap="StudentResultMap">
+        select * from t_user
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+        #{id}
+        </foreach>
+    </select>
+    <select id="loginByUser" resultType="com.geekaca.mybatis.pojo.Student">
+        select * from t_user where
+        name = #{name}
+        and
+        pwd = #{pwd};
+    </select>
+    <select id="checkLogin" resultType="java.lang.Integer">
+        select count(*) from t_user where
+            name = #{name}
+                                      and
+            pwd = #{pwd};
+    </select>
+
+</mapper>
