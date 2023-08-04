@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekaca.mybatis.mapper.EmployeeMapper">
+    <resultMap id="empMap" type="Employee">
+        <result column="dept_id" property="deptId"/>
+
+    </resultMap>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into dongtu_emp ( emp_name, joindate, salary, height, dept_id)
+        values(#{empName}, #{joindate}, #{salary}, #{height}, #{deptId})
+    </insert>
+    <update id="updateNameById">
+        update dongtu_emp set emp_name = #{empName}
+        where id = #{id}
+    </update>
+    <select id="selectAll" resultMap="empMap">
+        select * from dongtu_emp
+    </select>
+    <select id="selectAllEmpDept" resultType="com.geekaca.mybatis.pojo.EmployeeDept">
+        SELECT * FROM dongtu_emp emp, dongtu_dept dep
+        where emp.dept_id = dep.dept_id;
+    </select>
+</mapper>
