@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    namespace:名称空间
+    告诉mybatis 到哪里去找mapper类
+-->
+
+
+<mapper namespace="com.geekaca.mybatis.mapper.QuestionMapper">
+
+
+    <select id="selectAll" resultType="com.geekaca.mybatis.pojo.Question">
+        select *
+        from tb_question
+    </select>
+</mapper>

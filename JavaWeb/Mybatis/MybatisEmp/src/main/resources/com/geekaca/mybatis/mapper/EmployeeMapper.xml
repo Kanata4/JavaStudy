@@ -22,4 +22,6 @@
         SELECT * FROM dongtu_emp emp, dongtu_dept dep
         where emp.dept_id = dep.dept_id;
     </select>
+
+
 </mapper>
