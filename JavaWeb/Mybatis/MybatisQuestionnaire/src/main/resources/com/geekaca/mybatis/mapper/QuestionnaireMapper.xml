@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    namespace:名称空间
+    告诉mybatis 到哪里去找mapper类
+-->
+
+
+<mapper namespace="com.geekaca.mybatis.mapper.QuestionnaireMapper">
+    <resultMap id="questionMap" type="Questionnaire">
+        <result column="questionnaire_id" property="id"/>
+    </resultMap>
+    <resultMap id="optionMap" type="Option">
+        <result column="option_content" property="optionContent"/>
+        <result column="questionnaire_id" property="id"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="questionMap">
+        select *
+        from tb_questionnaire
+    </select>
+    <select id="selectQuestionnaireContentById" resultMap="optionMap">
+        SELECT
+            tb_questionnaire.questionnaire_id,
+            title,
+            createdate,
+            content,
+            option_content
+        FROM
+            tb_questionnaire
+                INNER JOIN
+            tb_question ON tb_questionnaire.questionnaire_id = tb_question.questionnaire_id
+                LEFT JOIN
+            tb_option ON tb_question.question_id = tb_option.question_id
+        WHERE
+            tb_questionnaire.questionnaire_id = #{id};
+    </select>
+</mapper>
