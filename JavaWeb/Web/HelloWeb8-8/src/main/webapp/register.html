@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册</title>
+</head>
+<body>
+    <div class="register">
+        <h2>注册</h2>
+        <form>
+            <div>
+                <label for="username">用户名：</label>
+                <input type="text" id="username">
+            </div>
+            <div>
+                <label for="password">密码：</label>
+                <input type="password" id="password">
+            </div>
+            <div>
+                <label for="confirm">确认密码：</label>
+                <input type="password" id="confirm">
+            </div>
+            <div>
+                <input type="radio" name="gender" value="1" id="male">
+                <label for="male">男</label>
+                <input type="radio" name="gender" value="2" id="female">
+                <label for="female">女</label>
+            </div>
+            <div>
+                <label for="male">爱好：</label>
+                <input type="checkbox" name="hobby" value="1"> 旅游
+                <input type="checkbox" name="hobby" value="2"> 电影
+                <input type="checkbox" name="hobby" value="3"> 游戏
+            </div>
+            <div>
+                头像：
+                <input type="file" name="myheaderImg"><br>
+            </div>
+            <div>
+                城市:
+                <select name="city">
+                    <option value="bj">北京</option>
+                    <option value="shanghai">上海</option>
+                    <option value="guangzhou">广州</option>
+                </select>
+                <br>
+            </div>
+            <div>
+                个人描述：
+                <textarea cols="50" rows="15" name="desc">请填写个人描述</textarea>
+            </div>
+            <button type="submit" >注册</button>
+        </form>
+    </div>
+</body>
+</html>
