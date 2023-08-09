@@ -33,7 +33,7 @@
             tb_questionnaire
                 INNER JOIN
             tb_question ON tb_questionnaire.questionnaire_id = tb_question.questionnaire_id
-                LEFT JOIN
+                INNER JOIN
             tb_option ON tb_question.question_id = tb_option.question_id
         WHERE
             tb_questionnaire.questionnaire_id = #{id};
