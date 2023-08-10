@@ -30,9 +30,6 @@ public class ParamServlet extends HelloServlet{
         //单个值
         String uname =request.getParameter("username");
         String pwd = request.getParameter("password");
-<<<<<<< HEAD
-        System.out.println("username:" + uname + " password:" + pwd);
-=======
         String adminName = "admin";
         String adminPwd = "123456";
         if (uname.equals(adminName) && pwd.equals(adminPwd)){
@@ -41,7 +38,6 @@ public class ParamServlet extends HelloServlet{
         } else {
             System.out.println("登陆失败！");
         }
->>>>>>> Web核心 Servlet 用户注册
         //多个值
         String[] hobbies = request.getParameterValues("hobby");
         if (hobbies != null){

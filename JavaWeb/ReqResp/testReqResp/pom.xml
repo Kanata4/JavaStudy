@@ -5,12 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.geekaca.web</groupId>
-  <artifactId>tryWeb</artifactId>
+  <artifactId>testReqResp</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
-
-  <name>tryWeb Maven Webapp</name>
+  <name>testReqResp Maven Webapp</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -73,10 +72,10 @@
       <scope>compile</scope>
     </dependency>
   </dependencies>
-<!--  tomcat9对应servlet4.0-->
+  <!--  tomcat9对应servlet4.0-->
 
   <build>
-    <finalName>tryWeb</finalName>
+    <finalName>testReqResp</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <plugin>
