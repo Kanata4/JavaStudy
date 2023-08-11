@@ -10,9 +10,19 @@
 
 
 <mapper namespace="com.geekaca.web.mapper.UserMapper">
+    <resultMap id="userMap" type="User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="desc" column="description"/>
+    </resultMap>
     <insert id="add">
         insert into tb_user values(null,#{username},#{password})
     </insert>
+    <insert id="insertUserWithDetail">
+        insert into tb_user(id,username, password, gender, city, hobby, description)
+        values(null,#{username}, #{password}, #{gender}, #{city}, #{hobby}, #{desc})
+    </insert>
+
 
     <select id="selectByUnamePass" resultType="java.lang.Integer">
         SELECT
@@ -22,6 +32,13 @@
         WHERE
             username = #{username}
           AND password = #{password};
+    </select>
+    <select id="selectByUname" resultType="java.lang.Integer">
+        select count(*) as cnt from tb_user where username = #{myUserName};
+    </select>
+    <select id="selectUserByName" resultMap="userMap">
+        select * from tb_user
+        where username like concat('%',#{userName},'%');
     </select>
 
 </mapper>
