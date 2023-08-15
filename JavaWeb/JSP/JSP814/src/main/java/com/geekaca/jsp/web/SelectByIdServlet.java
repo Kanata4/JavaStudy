@@ -9,18 +9,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet(urlPatterns = "/selectAll")
-public class SelectAllServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/selectByIdServlet")
+public class SelectByIdServlet extends HttpServlet {
     private BrandService service = new BrandService();
 
     @Override
     public void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setHeader("Content-Type","text/html;charset=UTF-8");
-        req.setCharacterEncoding("UTF-8");
-        List<Brand> brands = service.selectAll();
-        req.setAttribute("brands",brands);
-        req.getRequestDispatcher("/brand.jsp").forward(req,resp);
+        String id = req.getParameter("id");
+        Brand brand = service.selectById(Integer.parseInt(id));
+        req.setAttribute("brand",brand);
+        req.getRequestDispatcher("/update.jsp").forward(req,resp);
     }
 }

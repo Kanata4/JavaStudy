@@ -22,7 +22,8 @@
     <title>Title</title>
 </head>
 <body>
-<input type="button" value="新增"><br>
+
+<a href="/JSP814/addBrand"><input type="button" value="新增"></a><br>
 <hr>
 <table border="1" cellspacing="0" width="80%">
     <tr>
@@ -50,8 +51,10 @@
             <c:if test="${brand.status != 1}">
                 <td>禁用</td>
             </c:if>
-            <td><a href="#">修改</a> <a href="#">删
-                除</a></td>
+            <td>
+                <a href="/JSP814/selectByIdServlet?id=${brand.id}">修改</a>
+                <a href="/JSP814/deleteBrand?id=${brand.id}">删除</a>
+            </td>
         </tr>
     </c:forEach>
 
