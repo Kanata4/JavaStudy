@@ -13,7 +13,9 @@ public interface BrandMapper {
 
     Brand selectById(int id);
 
-    void updateBrand(Brand brand);
+    int updateBrand(Brand brand);
 
-    void deleteBrand(int id);
+    int deleteBrand(int id);
+
+    List<Brand> selectByCompanyName(String brandName);
 }

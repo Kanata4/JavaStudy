@@ -24,4 +24,7 @@
     <select id="selectById" resultMap="brandResultMap">
         select * from tb_brand where id = #{id};
     </select>
+    <select id="selectByCompanyName" resultMap="brandResultMap">
+        SELECT * FROM tb_brand where brand_name like concat('%',#{brandName},'%');
+    </select>
 </mapper>

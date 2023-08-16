@@ -24,6 +24,13 @@
 <body>
 
 <a href="/JSP814/addBrand"><input type="button" value="新增"></a><br>
+
+<form action="/JSP814/selectByName" method="post">
+    <label>查询：</label>
+    <input name="brandName" value="${brand.brandName}">
+    <input type="submit" value="提交">
+</form>
+
 <hr>
 <table border="1" cellspacing="0" width="80%">
     <tr>

@@ -32,8 +32,16 @@ public class UpdateServlet extends HttpServlet {
         brand.setDescription(description);
         brand.setStatus(Integer.parseInt(status));
 
-        service.updateBrand(brand);
-        req.getRequestDispatcher("/selectAll").forward(req,res);
+        int updated = service.updateBrand(brand);
+        if (updated > 0){
+            req.getRequestDispatcher("/selectAll").forward(req,res);
+        } else {
+            req.setAttribute("brd",brand);
+            req.setAttribute("error","更新失败");
+            //请求转发，浏览器地址不会变化
+            req.getRequestDispatcher("/update.jsp").forward(req,res);
+            return;
+        }
 
     }
 }
