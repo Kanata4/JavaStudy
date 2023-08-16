@@ -22,9 +22,9 @@
     <title>Title</title>
 </head>
 <body>
-
+<h2>用户名：${uname}</h2><br/>
 <a href="/JSP814/addBrand"><input type="button" value="新增"></a><br>
-
+<a href="/JSP814/remove"><input type="button" value="注销"></a><br>
 <form action="/JSP814/selectByName" method="post">
     <label>查询：</label>
     <input name="brandName" value="${brand.brandName}">
@@ -64,6 +64,7 @@
             </td>
         </tr>
     </c:forEach>
+
 
 
 
