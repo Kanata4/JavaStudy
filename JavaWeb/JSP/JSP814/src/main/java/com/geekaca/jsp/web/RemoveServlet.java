@@ -13,9 +13,9 @@ public class RemoveServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        //删除session
+        //删除session 只是删除当前用户自己的session数据 对别人没有影响
         session.removeAttribute("uname");
         session.invalidate();
-        resp.sendRedirect(req.getContextPath() + "/index.jsp");
+        resp.sendRedirect(req.getContextPath() + "/login.jsp");
     }
 }

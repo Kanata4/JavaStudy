@@ -22,8 +22,8 @@
     <title>Title</title>
 </head>
 <body>
-<h2>用户名：${uname}</h2><br/>
-<a href="/JSP814/addBrand"><input type="button" value="新增"></a><br>
+<h2>欢迎您：${uname}</h2><br/>
+<a href="addBrand.jsp"><input type="button" value="新增"></a><br>
 <a href="/JSP814/remove"><input type="button" value="注销"></a><br>
 <form action="/JSP814/selectByName" method="post">
     <label>查询：</label>
