@@ -5,11 +5,12 @@
   Time: 15:46
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page isELIgnored="false" %>
 <html>
 <head>
-    <title>新增</title>
+    <title>添加品牌</title>
 </head>
 <body>
 <h2>欢迎您：${uname}</h2><br/>
@@ -21,7 +22,11 @@
     企业名称：<input name="companyName"><br>
     排序：<input name="ordered"><br>
     描述信息：<textarea rows="5" cols="20" name="description"></textarea><br>
-    类别：<input name="typeId"><br>
+    类别：<select name="typeId">
+    <c:forEach items="${types}" var="type" varStatus="status">
+        <option value="${type.typeId}">${type.typeName}</option>
+    </c:forEach>
+    </select><br>
     状态：
     <input type="radio" name="status" value="0">禁用
     <input type="radio" name="status" value="1">启用<br>

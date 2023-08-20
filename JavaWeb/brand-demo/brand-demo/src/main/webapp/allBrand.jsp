@@ -13,6 +13,7 @@
     <title>查询</title>
 </head>
 <body>
+<h2>欢迎您：${uname}</h2><br/>
 <font color="red">${err}</font>
 <font color="green">${info}</font>
 <h3>查询</h3>

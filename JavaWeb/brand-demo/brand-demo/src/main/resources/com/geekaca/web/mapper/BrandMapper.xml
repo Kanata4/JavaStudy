@@ -43,6 +43,11 @@
         select * from tb_brand where id = #{id};
     </select>
     <select id="selectByCompanyName" resultMap="typeResultMap">
-        select * from tb_brand where brand_name like concat('%',#{brandName},'%');
+        select
+               *
+        from tb_brand
+            INNER JOIN tb_type
+        where brand_name like concat('%',#{brandName},'%')
+        and tb_brand.type_id = tb_type.type_id;
     </select>
 </mapper>

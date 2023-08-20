@@ -12,6 +12,7 @@
     <title>主页</title>
 </head>
 <body>
+<font color="red">${err}</font>
 <h2>欢迎您：${uname}</h2><br/>
 <a href="${pageContext.request.contextPath}/selectAll"><input type="button" value="查询所有"></a><br>
 <a href="addBrand.jsp"><input type="button" value="新增"></a><br>
@@ -20,6 +21,7 @@
     <input name="brandName">
     <input type="submit" value="查询">
 </form>
+<a href="${pageContext.request.contextPath}/allType"><input type="button" value="查询所有商品类别"></a><br>
 <hr>
 </body>
 </html>

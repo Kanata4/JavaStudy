@@ -36,6 +36,7 @@ public class AddServlet extends HttpServlet {
             //todo:跳转到查询所有的界面
             //需要先 跳转到servlet 查询数据，
             //目标，跳转到另一个servlet, 不传值直接用重定向，如果要传多个，比如集合，要用forward
+            req.getAttribute("types");
             resp.sendRedirect(req.getContextPath() + "/selectAll");
         } else {
             //提示出错

@@ -20,7 +20,11 @@
         企业名称：<input name="companyName" value="${brand.companyName}"><br>
         排序：<input name="ordered" value="${brand.ordered}"><br>
         描述信息：<textarea rows="5" cols="20" name="description">${brand.description}</textarea><br>
-        类别：<input name="typeId" value="${brand.typeId}"><br>
+        类别：<select name="typeId">
+        <c:forEach items="${types}" var="type" varStatus="status">
+            <option <c:if test="${brand.typeId == type.typeId}"> selected = "selected"</c:if> value="${type.typeId}" >${type.typeName}</option>
+        </c:forEach>
+    </select><br>
         状态：
         <c:if test="${brand.status == 0}">
             <input type="radio" name="status" value="0" checked>禁用

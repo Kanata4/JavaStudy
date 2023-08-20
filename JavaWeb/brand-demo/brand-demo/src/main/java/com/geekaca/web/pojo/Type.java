@@ -24,7 +24,6 @@ public class Type extends Brand{
     public String toString() {
         return "Type{" +
                 "typeName='" + typeName + '\'' +
-                "brandName:" + this.getBrandName() +
                 '}';
     }
 }

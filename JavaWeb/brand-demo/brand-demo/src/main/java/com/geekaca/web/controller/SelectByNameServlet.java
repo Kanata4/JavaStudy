@@ -2,6 +2,7 @@ package com.geekaca.web.controller;
 
 import com.geekaca.web.pojo.Brand;
 import com.geekaca.web.service.BrandService;
+import org.apache.ibatis.annotations.Param;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,8 +20,14 @@ public class SelectByNameServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf-8");
         String brandName = req.getParameter("brandName");
-        List<Brand> brands = brandService.selectByBrandName(brandName);
-        req.setAttribute("brands",brands);
-        req.getRequestDispatcher("/allBrand.jsp").forward(req,resp);
+        if(brandName != null && brandName != ""){
+            List<Brand> brands = brandService.selectByBrandName(brandName);
+            req.setAttribute("brands",brands);
+            req.getRequestDispatcher("/allBrand.jsp").forward(req,resp);
+        }else {
+            req.setAttribute("err","输入有误！");
+            req.getRequestDispatcher("/main.jsp").forward(req,resp);
+        }
+
     }
 }
