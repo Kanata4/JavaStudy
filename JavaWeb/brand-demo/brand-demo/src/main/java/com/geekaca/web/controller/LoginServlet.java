@@ -16,7 +16,7 @@ public class LoginServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //因为返回客户端（浏览）展示 ， 需要设置内容类型和编码（默认是ISO-8859-1编码），英文编码，中文在这个编码下乱码
         resp.setHeader("Content-Type","text/html;charset=UTF-8");
-        req.setCharacterEncoding("UTF-8");
+
         //接收参数
         String uname = req.getParameter("username");
         String pwd = req.getParameter("password");
@@ -27,7 +27,10 @@ public class LoginServlet extends HttpServlet {
         if (loginOk){
             //登陆成功
             HttpSession session = req.getSession();
-            session.setAttribute("uname",uname);
+            User user = new User();
+            user.setUsername(uname);
+            user.setPassword(pwd);
+            session.setAttribute("user",user);
             /**
              * 记住我
              */

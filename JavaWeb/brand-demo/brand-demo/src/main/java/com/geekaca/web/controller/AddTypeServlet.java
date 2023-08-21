@@ -17,7 +17,6 @@ public class AddTypeServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
         String typeName = req.getParameter("typeName");
         Type type = new Type();
         type.setTypeName(typeName);

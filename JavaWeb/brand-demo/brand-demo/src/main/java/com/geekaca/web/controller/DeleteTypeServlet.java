@@ -15,7 +15,7 @@ public class DeleteTypeServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
+
         String id = req.getParameter("id");
         if (id == null || "".equals(id.trim())){
             return;

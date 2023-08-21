@@ -17,7 +17,7 @@ public class UpdateServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
+
         String id = req.getParameter("id");
         String brandName = req.getParameter("brandName");
         String companyName = req.getParameter("companyName");

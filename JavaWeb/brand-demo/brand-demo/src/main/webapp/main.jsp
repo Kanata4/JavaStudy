@@ -13,7 +13,7 @@
 </head>
 <body>
 <font color="red">${err}</font>
-<h2>欢迎您：${uname}</h2><br/>
+<h2>欢迎您：${user.username}</h2><br/>
 <a href="${pageContext.request.contextPath}/selectAll"><input type="button" value="查询所有"></a><br>
 <a href="addBrand.jsp"><input type="button" value="新增"></a><br>
 <a href="${pageContext.request.contextPath}/logout"><input type="button" value="注销"></a><br>

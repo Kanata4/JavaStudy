@@ -13,7 +13,7 @@
     <title>添加品牌</title>
 </head>
 <body>
-<h2>欢迎您：${uname}</h2><br/>
+<h2>欢迎您：${user.username}</h2><br/>
 <h3>添加品牌</h3>
 <font color="red">${error}</font>
 

@@ -17,7 +17,7 @@ public class RegServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setHeader("Content-Type","text/html;charset=UTF-8");
-        req.setCharacterEncoding("UTF-8");
+
         /**
          * 接收用户名
          * 密码

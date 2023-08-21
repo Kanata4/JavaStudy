@@ -13,7 +13,7 @@
     <title>添加品牌类型</title>
 </head>
 <body>
-<h2>欢迎您：${uname}</h2><br/>
+<h2>欢迎您：${user.username}</h2><br/>
 <h3>添加品牌类别</h3>
 <font color="red">${error}</font>
 <form action="${pageContext.request.contextPath}/addType" method="post">
