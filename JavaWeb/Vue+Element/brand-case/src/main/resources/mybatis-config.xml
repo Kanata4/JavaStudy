@@ -17,7 +17,7 @@
 
     <!--    类型的别名配置-->
     <typeAliases>
-        <package name="com.geekaca.web.pojo"/>
+        <package name="com.geekaca.pojo"/>
     </typeAliases>
 
     <!--
@@ -37,14 +37,11 @@
     </environments>
     <mappers>
         <!--加载sql映射文件-->
-
         <!--告诉mybatis，你的mapper类在哪里
         如果不配置，会报错
         BindingException: Type interface com.geekaca.review.mapper.EmployeeMapper
          is not known to the MapperRegistry
          -->
-        <package name="com.geekaca.web.mapper"/>
+        <package name="com.geekaca.mapper"/>
     </mappers>
-
-
 </configuration>

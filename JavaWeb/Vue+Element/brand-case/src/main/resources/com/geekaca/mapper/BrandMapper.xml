@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekaca.mapper.BrandMapper">
+    <resultMap id="brandResultMap" type="brand">
+        <result property="brandName" column="brand_name"></result>
+        <result property="companyName" column="company_name"></result>
+        <result property="typeId" column="type_id"></result>
+    </resultMap>
+    <resultMap id="typeResultMap" type="type">
+    </resultMap>
+    <insert id="add">
+        insert into tb_brand values(null,#{brandName},#{companyName},#{ordered},#{description},#{status},#{typeId});
+    </insert>
+    <update id="update">
+        update tb_brand set brand_name = #{brandName}, company_name=#{companyName},ordered=#{ordered},
+                            description=#{description}, status=#{status}
+        where id = #{id};
+    </update>
+    <delete id="delete">
+        delete from tb_brand where id = #{id};
+    </delete>
+    <select id="selectAll" resultMap="typeResultMap">
+        SELECT
+            *
+        FROM
+            tb_brand
+                INNER JOIN
+            tb_type ON tb_brand.type_id = tb_type.type_id;
+    </select>
+    <select id="search" resultMap="typeResultMap">
+        select
+            *
+        from tb_brand
+                 INNER JOIN tb_type on tb_brand.type_id = tb_type.type_id
+        <where>
+            <if test="brandName != null and brandName != '' ">
+                and  brand_name like concat('%',#{brandName},'%')
+            </if>
+
+            <if test="companyName != null and companyName != '' ">
+                and  company_name like concat('%',#{companyName},'%')
+            </if>
+
+            <if test="status != null">
+                and  status = #{status}
+            </if>
+
+        </where>
+    </select>
+</mapper>
