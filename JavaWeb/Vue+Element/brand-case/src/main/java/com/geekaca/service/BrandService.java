@@ -12,19 +12,44 @@ public class BrandService {
     //1. 创建SqlSessionFactory 工厂对象
     SqlSessionFactory factory = SqlSessionFactoryUtils.getSqlSessionFactory();
 
-    public List<Brand> selectAll() {
+//    public List<Brand> selectAll() {
+//        //2. 获取SqlSession对象
+//        SqlSession sqlSession = factory.openSession();
+//        //3. 获取BrandMapper
+//        BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+//
+//        //4. 调用方法
+//        List<Brand> brands = mapper.selectAll();
+//
+//        //5.释放资源
+//        sqlSession.close();
+//
+//        return brands;
+//    }
+
+    //方法重载
+    public List<Brand> selectAll(Integer pageNo, Integer pageSize) {
         //2. 获取SqlSession对象
         SqlSession sqlSession = factory.openSession();
         //3. 获取BrandMapper
         BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+        int start = (pageNo - 1) * pageSize;
 
         //4. 调用方法
-        List<Brand> brands = mapper.selectAll();
+        List<Brand> brands = mapper.selectAll(start,pageSize);
 
         //5.释放资源
         sqlSession.close();
 
         return brands;
+    }
+
+    public int getAllBrandsCount(){
+        SqlSession sqlSession = factory.openSession();
+        BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+        int count = mapper.selectAllCount();
+        sqlSession.close();
+        return count;
     }
 
     public int add(Brand brand) {
@@ -43,14 +68,15 @@ public class BrandService {
         return i;
     }
 
-    public List<Brand> search(Brand brand) {
+    public List<Brand> search(Integer pageNo, Integer pageSize,Brand brand) {
         //2. 获取SqlSession对象
         SqlSession sqlSession = factory.openSession();
         //3. 获取BrandMapper
         BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+        int start = (pageNo - 1) * pageSize;
 
         //4. 调用方法
-        List<Brand> brands = mapper.search(brand);
+        List<Brand> brands = mapper.search(start,pageSize,brand);
 
         //5.释放资源
         sqlSession.close();

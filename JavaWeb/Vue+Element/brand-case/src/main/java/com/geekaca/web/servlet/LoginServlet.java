@@ -2,7 +2,10 @@ package com.geekaca.web.servlet;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.geekaca.web.util.Result;
+import com.geekaca.pojo.User;
+import com.geekaca.service.UserService;
+import com.geekaca.util.JwtUtil;
+import com.geekaca.util.Result;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
@@ -17,9 +20,9 @@ import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
+    private UserService userService = new UserService();
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //现阶段 servlet方式这样接收，稍稍麻烦一点
         ServletInputStream inputStream = req.getInputStream();
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
         String s = br.readLine();
@@ -29,29 +32,27 @@ public class LoginServlet extends HttpServlet {
         JSONObject jsonObject = JSON.parseObject(s, JSONObject.class);
         Object uname = jsonObject.get("uname");
         System.out.println(uname + " pass:" + jsonObject.get("pwd"));
-        /**
-         * todo: 拿着用户名和密码
-         * 到数据库查询，判断登陆是否成功
-         * 调用Mybatis
-         *
-         * 返回给前端的仍然需要是一个JSON结构的字符串
-         *
-         * 比如： 登陆成功，返回  {"code": 200, "msg": "登陆成功"}
-         * 登陆失败  返回  {"code": 400, "msg": "登陆失败"}
-         */
-        boolean isLoginOk = "test".equals(uname);
+        Object pwd = jsonObject.get("pwd");
+        User user = userService.isLoginOk(uname.toString(), pwd.toString());
+        resp.setHeader("Content-Type", "text/json;charset=utf-8");
+        PrintWriter writer = resp.getWriter();
         Result result = new Result();
-        if (isLoginOk){
-
+        if (user != null){
+            //登陆成功
+            /**
+             * 生成token，返回给前端
+             */
+            String token = JwtUtil.createToken(user);
             result.setCode(200);
+            result.setData(token);
             result.setMsg("登陆成功");
         }else{
             result.setCode(400);
-            result.setMsg("登陆失败");
+            result.setMsg("登陆成功");
         }
         String jsonString = JSON.toJSONString(result);
-        resp.setContentType("text/json;charset=UTF-8");
-        PrintWriter writer = resp.getWriter();
         writer.write(jsonString);
+        writer.flush();
+
     }
 }

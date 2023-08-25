@@ -1,6 +1,7 @@
 package com.geekaca.web.servlet;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.geekaca.pojo.Brand;
 import com.geekaca.service.BrandService;
 
@@ -25,19 +26,37 @@ public class SearchServlet extends HttpServlet {
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //接收数据 JSON格式 读取消息体数据
         ServletInputStream ips = req.getInputStream();
-        BufferedReader br = new BufferedReader(new InputStreamReader(ips));
+        BufferedReader br = new BufferedReader(new InputStreamReader(ips,"UTF-8"));
         String line = br.readLine();//json字符串
         System.out.println("line:" + line);
         //转换为Brand对象
         Brand brand = JSON.parseObject(line, Brand.class);
-        List<Brand> brands = brandService.search(brand);
-        //转为JSON
-        String jsonString = JSON.toJSONString(brands);
-        resp.setHeader("Content-Type","text/json;charset=utf-8");
-        req.setCharacterEncoding("utf-8");
+
+        //调用service查询
+        String pageNo = req.getParameter("pageNo");
+        String cntPerPage = req.getParameter("cntPerPage");
+        if (pageNo == null){
+            pageNo = "1";
+        }
+        if (cntPerPage == null){
+            cntPerPage = "10";
+        }
+        int pNo = Integer.parseInt(pageNo);
+        int pageSize = Integer.parseInt(cntPerPage);
+        //自动装箱 int->Integer
+        //查询这一页的数据
+        List<Brand> brands = brandService.search(pNo,pageSize,brand);
+        //单独执行一个查询，查询符合条件的总记录条数
+        int allBrandsCount = brandService.getAllBrandsCount();
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("cnt",allBrandsCount);
+        jsonObject.put("brands",brands);
         //直接返回给前端
+
+        resp.setHeader("Content-Type", "text/json;charset=utf-8");
         PrintWriter writer = resp.getWriter();
-        writer.write(jsonString);
+        writer.write(jsonObject.toJSONString());
         writer.flush();
     }
 }

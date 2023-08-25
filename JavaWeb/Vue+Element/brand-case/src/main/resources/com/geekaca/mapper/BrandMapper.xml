@@ -8,7 +8,7 @@
         <result property="companyName" column="company_name"></result>
         <result property="typeId" column="type_id"></result>
     </resultMap>
-    <resultMap id="typeResultMap" type="type">
+    <resultMap id="typeResultMap" type="brandType">
     </resultMap>
     <insert id="add">
         insert into tb_brand values(null,#{brandName},#{companyName},#{ordered},#{description},#{status},#{typeId});
@@ -27,26 +27,34 @@
         FROM
             tb_brand
                 INNER JOIN
-            tb_type ON tb_brand.type_id = tb_type.type_id;
+            tb_type ON tb_brand.type_id = tb_type.type_id
+            LIMIT #{start}, #{pageSize};
     </select>
-    <select id="search" resultMap="typeResultMap">
+    <select id="search" resultMap="brandResultMap">
         select
             *
         from tb_brand
-                 INNER JOIN tb_type on tb_brand.type_id = tb_type.type_id
         <where>
             <if test="brandName != null and brandName != '' ">
-                and  brand_name like concat('%',#{brandName},'%')
+                or  brand_name like concat('%',#{brand.brandName},'%')
             </if>
 
             <if test="companyName != null and companyName != '' ">
-                and  company_name like concat('%',#{companyName},'%')
+                or  company_name like concat('%',#{brand.companyName},'%')
             </if>
 
             <if test="status != null">
-                and  status = #{status}
+                or  status = #{brand.status}
+            </if>
+
+            <if test="typeId != null">
+                or  typeId = #{brand.typeId}
             </if>
 
         </where>
+        LIMIT #{start}, #{pageSize};
+    </select>
+    <select id="selectAllCount" resultType="java.lang.Integer">
+        select count(*) from tb_brand;
     </select>
 </mapper>

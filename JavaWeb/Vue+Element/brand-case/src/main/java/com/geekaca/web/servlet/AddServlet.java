@@ -1,8 +1,10 @@
 package com.geekaca.web.servlet;
 
 import com.alibaba.fastjson.JSON;
+import com.auth0.jwt.interfaces.Claim;
 import com.geekaca.pojo.Brand;
 import com.geekaca.service.BrandService;
+import com.geekaca.util.JwtUtil;
 import com.geekaca.util.Result;
 
 import javax.servlet.ServletException;
@@ -13,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Map;
 
 @WebServlet(urlPatterns = "/addServlet")
 public class AddServlet extends HttpServlet {
@@ -25,6 +28,7 @@ public class AddServlet extends HttpServlet {
         //1. 接收品牌数据 JSON格式 读取消息体数据
         BufferedReader br = req.getReader();
         String line = br.readLine();//json字符串
+
         //转换为Brand对象
         Brand brand = JSON.parseObject(line, Brand.class);
         StringBuilder msg = new StringBuilder();

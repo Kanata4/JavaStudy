@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>V</title>
     <style>
         .el-table .warning-row {
             background: oldlace;
@@ -12,12 +12,11 @@
             background: #f0f9eb;
         }
     </style>
-
 </head>
 <body>
-<div id="app">
 
-    <!--elementUI 组件 搜索表单  model 指定 数据绑定
+<div id="app">
+    <!-- elementUI 组件 搜索表单    model 指定 数据绑定
         你在输入框中输入的值会被绑定到brand 变量的属性上
     -->
     <el-form :inline="true" :model="brand" class="demo-form-inline">
@@ -28,7 +27,16 @@
                 <el-option label="禁用" value="0"></el-option>
             </el-select>
         </el-form-item>
+        <el-form-item label="类别">
+            <el-select v-model="brand.typeId" placeholder="品牌类别">
 
+                <el-option v-for="item in allTypes" :key="item.typeId"
+                           :label="item.typeName"
+                           :value="item.typeId"
+                ></el-option>
+
+            </el-select>
+        </el-form-item>
         <el-form-item label="企业名称">
             <el-input v-model="brand.companyName" placeholder="企业名称"></el-input>
         </el-form-item>
@@ -41,27 +49,25 @@
             <el-button type="primary" @click="onSearch">查询</el-button>
         </el-form-item>
     </el-form>
-
     <!--按钮-->
 
     <el-row>
 
         <el-button type="danger" plain @click="batchDel()">批量删除</el-button>
-        <el-button type="primary" plain @click="dialogType = 1, dialogVisible = true, dialogTitle= '新增'">新增</el-button>
+        <el-button type="primary" plain @click="dialogType=1, dialogVisible = true, dialogTitle= '新增'">新增</el-button>
 
     </el-row>
     <!--添加数据对话框表单
         默认是隐藏的
         visible.sync 设置 对话框是否显示
-        title 设置对话框的标题 和 dialogTitle绑定
-        :before-close 当对话框被关闭的时候 会触发的函数
-        -->
+        title 设置对话框的标题   和 dialogTitle 变量绑定
+        :before-close  当对话框被关闭时候 会触发的函数
+    -->
     <el-dialog
             :before-close="beforeClose"
             :title="dialogTitle"
             :visible.sync="dialogVisible"
-            width="30%"
-    >
+            width="30%">
 
         <el-form ref="form" :model="brand" label-width="80px">
             <el-form-item label="品牌名称">
@@ -87,67 +93,46 @@
                 ></el-switch>
             </el-form-item>
 
-            <el-form-item label="类别">
-                <el-input v-model="brand.typeId"></el-input>
-            </el-form-item>
-
 
             <el-form-item>
-<!--                新增和修改 提交 都是同一个按钮-->
+                <!--                 新增和修改提交 都是同一个按钮-->
                 <el-button type="primary" @click="addBrand()">提交</el-button>
                 <el-button @click="dialogVisible = false">取消</el-button>
             </el-form-item>
         </el-form>
 
     </el-dialog>
-
-
-    <!--elementUI 框架 提供的 表格 组件
-        :data 指定 表格展示的数据 是谁
-    -->
+    <!-- el-table-column   label 设置表格标题  prop 使用哪个属性展示值-->
     <template>
-        <el-table
-                :data="tableData"
-                style="width: 100%"
-                :row-class-name="tableRowClassName"
-                @selection-change="handleSelectionChange"
-        >
+        <el-table :data="myTableData">
             <el-table-column
-                    type="selection"
-                    width="55">
+                    prop="id"
+                    label="品牌编号"
+                    align="center">
             </el-table-column>
-            <el-table-column
-                    type="index"
-                    width="50">
-            </el-table-column>
-            <!--             prop 设置 显示 使用 哪个属性名字 -->
             <el-table-column
                     prop="brandName"
                     label="品牌名称"
-                    align="center"
-            >
+                    align="center">
             </el-table-column>
             <el-table-column
                     prop="companyName"
-                    label="企业名称"
-                    align="center"
-            >
-            </el-table-column>
-            <el-table-column
-                    prop="ordered"
-                    align="center"
-                    label="排序">
+                    label="公司名"
+                    align="center">
             </el-table-column>
             <el-table-column
                     prop="status"
-                    align="center"
-                    label="当前状态">
+                    label="状态"
+                    align="center">
+                <template scope="scope">
+                    <p v-if="scope.row.status == 1"> 启用</p>
+                    <p v-if="scope.row.status == 0"> 禁用</p>
+                </template>
             </el-table-column>
-
+            <!-- 单独的一列 放修改 ，删除按钮-->
             <el-table-column
                     align="center"
-                    label="操作"
-            >
+                    label="操作">
                 <template slot-scope="scope">
                     <el-row>
                         <el-button type="primary" @click="onEdit(0, scope.row)">修改</el-button>
@@ -155,285 +140,236 @@
                     </el-row>
                 </template>
             </el-table-column>
-
         </el-table>
     </template>
 
-    <!--分页工具条-->
+    <!--分页工具条
+https://element-plus.gitee.io/en-US/component/pagination.html#attributes
+size-change ：当修改每页显示条数时候，触发的函数
+current-change：  点击当前第几页时候 ，触发函数
+page-size 指定每页显示几条记录
+total: 总记录条数
+-->
     <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
             :current-page="currentPage"
             :page-sizes="[5, 10, 15, 20]"
-            :page-size="5"
+            :page-size="pageSize"
             layout="total, sizes, prev, pager, next, jumper"
-            :total="400">
+            :total="totalCnts">
     </el-pagination>
-
 </div>
-
 
 <script src="js/vue.js"></script>
 <script src="element-ui/lib/index.js"></script>
 <link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
-
+<!-- 用来发送HTTP请求 -->
 <script src="js/axios-0.18.0.js"></script>
-
 <script>
     new Vue({
         el: "#app",
-        //
         mounted() {
             //当页面加载完成后，发送异步请求，获取数据
-
             this.selectAll();
-
-            // var _this = this;//提升作用域
-            //
-            // axios({
-            //     method: "get",
-            //     url: "http://localhost:8080/brand-case/selectAllServlet"
-            // }).then(function (resp) {
-            //     _this.tableData = resp.data;//不能直接使用
-            // })
-
+            this.selectAllTypes();
         },
-
         methods: {
-
             // 查询所有数据
             selectAll() {
                 var _this = this;
                 // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
                 axios({
                     method: "get",
-                    url: "http://localhost:8080/brand-case/selectAllServlet"
+                    url: "http://localhost:8080/brand-case/selectAllServlet?pageNo="+_this.currentPage +"&cntPerPage="+_this.pageSize
                 }).then(function (resp) {
                     //当后端接口返回数据后，用哪个方法来接收  匿名方法
                     // 参数resp 代表 来自接口返回的数据
-                    // -this指向当前页面 table定义了一个变量
-                    console.log(_this.tableData);
-                    _this.tableData = resp.data;
+                    // let s = JSON.stringify(resp.data);
+                    // let parse = JSON.parse(s);
+                    // console.log(parse);
+                    _this.myTableData = resp.data.brands;
+                    _this.totalCnts = resp.data.cnt;
+                })
+            },
+            // 查询所有数据
+            selectAllTypes() {
+                var _this = this;
+                // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
+                axios({
+                    method: "get",
+                    url: "http://localhost:8080/brand-case/allTypes"
+                }).then(function (resp) {
+                    //当后端接口返回数据后，用哪个方法来接收  匿名方法
+                    // 参数resp 代表 来自接口返回的数据
+                    _this.allTypes = resp.data;
+                })
+            },
+            onSearch(){
+                // console.log(this.brand);
+                var _this = this;
+                // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/brand-case/searchServlet?pageNo="+_this.currentPage +"&cntPerPage="+_this.pageSize,
+                    data:_this.brand
+                }).then(function (resp) {
+                    //当后端接口返回数据后，用哪个方法来接收  匿名方法
+                    // 参数resp 代表 来自接口返回的数据
+                    _this.myTableData = resp.data.brands;
+                    _this.totalCnts = resp.data.cnt;
+                })
+            },
+            //新增
+            addBrand(){
+                // console.log(this.brand);
+                var _this = this;
+                // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
+
+                //要根据当前是新增还是修改，改变提交的servlet
+                var toUrl = "http://localhost:8080/brand-case/addServlet";
+                if (_this.dialogType == 0){
+                    toUrl = "http://localhost:8080/brand-case/updateServlet";
+                }
+                let token = localStorage.getItem("token");
+                axios({
+                    method: "post",
+                    url: toUrl,
+                    headers:{
+                        token: token
+                    },
+                    data: _this.brand
+                }).then(function (resp) {
+                    let s = JSON.stringify(resp.data);
+                    let parse = JSON.parse(s);
+                    _this.brand = {};
+                    _this.dialogVisible = false;
+                    if (parse.code == 200){
+                        _this.selectAll();
+                        // 弹出消息提示
+                        _this.$message({
+                            message: '恭喜你，增加成功',
+                            type: 'success'
+                        });
+
+                    }
                 })
             },
             //修改
-            //新增和修改用的是同一个对话框，所以需要一个变量来标识 当前到底是新增 打开的对话框，
-            //还是修改打开的，点击提交的时候，要根据是新增还是修改来决定提交给不同的servlet
-            //type 0 ： 修改   1：新增
+            //  新增和修改用的是同一个对话框，所以需要一个变量来标识 当前到底是新增 打开的对话框，
+            // 还是 修改打开的，点击提交的时候，要根据是新增，还是修改来决定提交给不同的servlet
+            //0:修改   1:新增
             onEdit(type, row) {
                 var _this = this;
                 _this.dialogType = type;
-                _this.dialogTile = '修改'
+                _this.dialogTitle = '修改'
                 _this.dialogVisible = true;
                 console.log(row)
-
                 _this.brand = row;
+
             },
             beforeClose(done){
-                this.brand={};
+                this.brand = {};
                 done();
             },
-            //删除
+            //当页面点击 页码，第几页 变化时候触发的函数
+            // 访问后端接口，参数{ 页码， 每页条数} ，获取这一页的数据
+            handleCurrentChange(val) {
+                // alert(val);
+                //重新查询
+                var _this = this;
+                //Javascript 的Http库  pageNo 当前第几页，页码   cntPerPage:每页显示记录条数
+                //和~ 在同一个按键上   `
+                //pageNo当前第几页 cntPerPage当前记录条数
+                axios({
+                    method: "get",
+                    url: `http://localhost:8080/brand-case/selectAllServlet?pageNo=${val}&cntPerPage=${_this.pageSize}`
+                }).then(function (resp) {
+                    //收到server的返回数据  JSON
+                    let s = JSON.stringify(resp.data);
+                    let parse = JSON.parse(s);
+                    _this.myTableData = parse.brands;
+                    _this.totalCnts = parse.cnt;
+                })
+            },
+            //分页  ,下拉框  修改 每页显示的记录条数时候会触发的函数
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+                this.pageSize = val;
+                this.selectAll();
+            },
             onDelete(row){
                 console.log(row.id);
                 var _this = this;
                 // 用axios（运行在浏览器中,本质是一个JS的框架） 框架发送 http请求
                 axios({
                     method: "get",
-                    url: "http://localhost:8080/brand-case/deleteServlet?id=" + row.id
+                    url: "http://localhost:8080/brand-case/deleteServlet?id="+row.id
                 }).then(function (resp) {
                     //当后端接口返回数据后，用哪个方法来接收  匿名方法
                     // 参数resp 代表 来自接口返回的数据
-                    // -this指向当前页面 table定义了一个变量
-                    if (resp.data.code == "200") {
-                        //删除成功
-                        // 重新查询数据
-                        _this.selectAll();
+                    let s = JSON.stringify(resp.data);
+                    let parse = JSON.parse(s);
+                    if (parse.code == 200){
                         // 弹出消息提示
                         _this.$message({
                             message: '恭喜你，删除成功',
                             type: 'success'
                         });
-                    }
-                })
-            },
-            //修改
-            onSendEdit() {
-                var _this = this;
-                // 发送ajax请求，修改数据
-                axios({
-                    method: "post",
-                    url: "http://localhost:8080/brand-case/updateServlet",
-                    data: _this.brand
-                }).then(function (resp) {
-                    if (resp.data.code == "200") {
-                        //添加成功
-
-                        //关闭窗口
-                        _this.dialogVisible = false;
-
-                        // 重新查询数据
                         _this.selectAll();
-                        // 弹出消息提示
-                        _this.$message({
-                            message: '恭喜你，修改成功',
-                            type: 'success'
-                        });
-
                     }
                 })
             },
-            tableRowClassName({row, rowIndex}) {
-                if (rowIndex === 1) {
-                    return 'warning-row';
-                } else if (rowIndex === 3) {
-                    return 'success-row';
-                }
-                return '';
-            },
-            batchDel() {
-                var _this = this;
-                var ids = _this.multipleSelection.map(d => d.id);
-                console.log(ids);
-                // 发送ajax请求，添加数据
-                axios({
-                    method: "post",
-                    url: "http://localhost:8080/brand-case/addServlet",
-                    data: ids
-                }).then(function (resp) {
-                    if (resp.data == "success") {
-                        //删除成功
-
-                        //关闭窗口
-                        _this.dialogVisible = false;
-                        _this.brand = {};
-                        // 重新查询数据
-                        _this.selectAll();
-                        // 弹出消息提示
-                        _this.$message({
-                            message: '恭喜你，操作成功',
-                            type: 'success'
-                        });
-
-                    }
-                })
-            },
-            // 复选框选中后执行的方法
-            handleSelectionChange(val) {
-                var _this = this;
-                _this.multipleSelection = val;
-
-                console.log(_this.multipleSelection)
-
-            },
-            // 查询方法
-            onSearch() {
-                var _this = this;
-                console.log(_this.brand);
-                // 查询所有数据
-                axios({
-                    method: "post",
-                    url: "http://localhost:8080/brand-case/searchServlet",
-                    data: _this.brand,
-                }).then(function (resp) {
-                    _this.tableData = resp.data;
-                })
-            },
-            // 添加数据
-            addBrand(type) {
-                //console.log(this.brand);
-
-                var _this = this;
-                console.log("dialogType", _this.dialogType);
-                var url = "http://localhost:8080/jsp_demo/addServlet";
-                if (_this.dialogType == 0) {
-                    url = "http://localhost:8080/brand-case/updateServlet";
-                } else {
-                    url = "http://localhost:8080/brand-case/addServlet";
-                }
-                // 发送ajax请求，添加数据
-                axios({
-                    method: "post",
-                    url: url,
-                    data: _this.brand,
-                }).then(function (resp) {//绑定回调函数 resp就是字符串
-                    if (resp.data.code == "200") {
-                        //添加成功
-
-                        //关闭窗口
-                        _this.dialogVisible = false;
-                        _this.brand = {};
-                        // 重新查询数据
-                        _this.selectAll();
-                        // 弹出消息提示
-                        _this.$message({
-                            message: '恭喜你，操作成功',
-                            type: 'success'
-                        });
-
-                    }
-                })
-
-
-            },
-
-            //分页
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
-            }
-
         },
-        data() {
-            return {
-                // 当前页码
-                currentPage: 4,
-                // 添加数据对话框是否展示的标记
-                dialogVisible: false,
-                // 0 编辑 1新增
-                dialogType: 0,
-                dialogTitle: "编辑",
-                // 品牌模型数据
-                brand: {
-                    status: '',
-                    brandName: '',
-                    companyName: '',
-                    id: "",
-                    ordered: "",
-                    description: "",
-                    typeId:""
-                },
-                // 复选框选中数据集合
-                multipleSelection: [],
-                // 表格数据
-                tableData: []
-            }
+        data: {
+            //控制对话框的显示还是隐藏
+            dialogVisible: false,
+            dialogTitle: '',
+            //向后端发送 当前页码，第几页
+            currentPage: 1,
+            //每页显示记录条数
+            pageSize: 10,
+            //来自于后端接口 总记录条数
+            totalCnts: 20,
+
+            brand: {
+                brandName:'',
+                companyName:'',
+                status:''
+            },
+            //数据list
+            myTableData: [],
+            //所有品牌类别list
+            allTypes:[],
         }
     })
 
+
+    // {
+    //     id: "9",
+    //         brandName: '三星',
+    //     companyName: '三星有限公司',
+    //     ordered: '100',
+    //     status: "1"
+    // }, {
+    //     id: "10",
+    //         brandName: '华为',
+    //         companyName: '华为科技有限公司',
+    //         ordered: '100',
+    //         status: "1"
+    // }, {
+    //     id: "11",
+    //         brandName: '苹果',
+    //         companyName: '苹果有限公司',
+    //         ordered: '100',
+    //         status: "1"
+    // }, {
+    //     id: "12",
+    //         brandName: '比亚迪',
+    //         companyName: '比亚迪科技有限公司',
+    //         ordered: '100',
+    //         status: "1"
+    // }
 </script>
-<!--{-->
-<!--brandName: '华为',-->
-<!--companyName: '华为科技有限公司',-->
-<!--ordered: '100',-->
-<!--status: "1"-->
-<!--}, {-->
-<!--brandName: '华为',-->
-<!--companyName: '华为科技有限公司',-->
-<!--ordered: '100',-->
-<!--status: "1"-->
-<!--}, {-->
-<!--brandName: '华为',-->
-<!--companyName: '华为科技有限公司',-->
-<!--ordered: '100',-->
-<!--status: "1"-->
-<!--}, {-->
-<!--brandName: '华为',-->
-<!--companyName: '华为科技有限公司',-->
-<!--ordered: '100',-->
-<!--status: "1"-->
-<!--}-->
 </body>
 </html>
