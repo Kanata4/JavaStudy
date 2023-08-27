@@ -115,4 +115,13 @@ public class BrandService {
 
         return i;
     }
+
+    public int queryBrandsCount(Integer pageNo, Integer pageSize, Brand brand) {
+        SqlSession sqlSession = factory.openSession();
+        BrandMapper mapper = sqlSession.getMapper(BrandMapper.class);
+        int start = (pageNo - 1) * pageSize;
+        int count = mapper.queryBrandCount(start,pageSize,brand);
+        sqlSession.close();
+        return count;
+    }
 }

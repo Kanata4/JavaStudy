@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>V</title>
+    <title>Vue</title>
     <style>
         .el-table .warning-row {
             background: oldlace;
@@ -51,7 +52,7 @@
     </el-form>
     <!--按钮-->
 
-    <el-row>
+    <el-row v-if="userType == 1">
 
         <el-button type="danger" plain @click="batchDel()">批量删除</el-button>
         <el-button type="primary" plain @click="dialogType=1, dialogVisible = true, dialogTitle= '新增'">新增</el-button>
@@ -91,6 +92,10 @@
                            active-value="1"
                            inactive-value="0"
                 ></el-switch>
+            </el-form-item>
+
+            <el-form-item label="类别">
+                <el-input v-model="brand.typeId"></el-input>
             </el-form-item>
 
 
@@ -170,6 +175,9 @@ total: 总记录条数
     new Vue({
         el: "#app",
         mounted() {
+            //提取本地存储的用户类型
+            this.userType = localStorage.getItem("userType");
+
             //当页面加载完成后，发送异步请求，获取数据
             this.selectAll();
             this.selectAllTypes();
@@ -231,7 +239,9 @@ total: 总记录条数
                 if (_this.dialogType == 0){
                     toUrl = "http://localhost:8080/brand-case/updateServlet";
                 }
+                //从本地存储中拿出token ，发给后端
                 let token = localStorage.getItem("token");
+                console.log(token);
                 axios({
                     method: "post",
                     url: toUrl,
@@ -252,6 +262,12 @@ total: 总记录条数
                             type: 'success'
                         });
 
+                    }
+                    else if(parse.code == 403){
+                        _this.$message({
+                            message: '非法访问',
+                            type: 'error'
+                        });
                     }
                 })
             },
@@ -331,11 +347,14 @@ total: 总记录条数
             pageSize: 10,
             //来自于后端接口 总记录条数
             totalCnts: 20,
-
+            userType: 0,
             brand: {
                 brandName:'',
                 companyName:'',
-                status:''
+                status:'',
+                pageNo: 1,
+                pageSize: 10,
+                typeId:''
             },
             //数据list
             myTableData: [],

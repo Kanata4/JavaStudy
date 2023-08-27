@@ -47,10 +47,15 @@ public class SearchServlet extends HttpServlet {
         //查询这一页的数据
         List<Brand> brands = brandService.search(pNo,pageSize,brand);
         //单独执行一个查询，查询符合条件的总记录条数
-        int allBrandsCount = brandService.getAllBrandsCount();
-
+        int count = brandService.queryBrandsCount(pNo,pageSize,brand);
+        /**
+         * 查询接口返回的数据 格式
+         * 和 显示所有数据 接口 格式一致
+         *
+         * 前端可以用同一套代码 处理显示
+         */
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("cnt",allBrandsCount);
+        jsonObject.put("cnt",count);
         jsonObject.put("brands",brands);
         //直接返回给前端
 

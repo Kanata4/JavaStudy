@@ -53,9 +53,10 @@
              if (parse.code == 200){
                  //登陆成功
                  console.log(parse.data)
-                 let token = parse.data;
-                 //前端存储本地
-                 localStorage.setItem("token", token);
+                 let userInfo = parse.data;
+                 //前端存储本地 把用户类型信息存入本地，方便后续使用
+                 localStorage.setItem("token", userInfo.token);
+                 localStorage.setItem("userType", userInfo.userType);
                  //页面跳转
                  window.location.href = "brand.html";
              }else{

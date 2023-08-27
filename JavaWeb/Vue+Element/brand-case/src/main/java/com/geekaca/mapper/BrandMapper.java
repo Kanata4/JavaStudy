@@ -29,6 +29,11 @@ public interface BrandMapper {
 
     int delete(Integer id);
 
+    //查询所有记录数量，记录条数
     int selectAllCount();
+
+    //按照条件，查询记录条数
+    int queryBrandCount(@Param("start")Integer pageNo, @Param("pageSize") Integer pageSize, @Param("brand") Brand brand);
+
 
 }

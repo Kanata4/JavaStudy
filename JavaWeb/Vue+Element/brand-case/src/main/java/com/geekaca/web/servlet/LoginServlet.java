@@ -41,10 +41,14 @@ public class LoginServlet extends HttpServlet {
             //登陆成功
             /**
              * 生成token，返回给前端
+             * 还要返回用户的type的类型
              */
             String token = JwtUtil.createToken(user);
             result.setCode(200);
-            result.setData(token);
+            //密码清空
+            user.setPassword("");
+            user.setToken(token);
+            result.setData(user);
             result.setMsg("登陆成功");
         }else{
             result.setCode(400);
