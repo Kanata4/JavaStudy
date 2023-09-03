@@ -8,9 +8,34 @@
         <id property="id" column="id"/>
         <result property="brandName" column="brand_name"/>
         <result property="companyName" column="company_name"/>
+        <result property="typeId" column="type_id"/>
     </resultMap>
-    <select id="selectAll" resultMap="brandMap">
+    <insert id="save">
+        insert into tb_brand
+        values (null ,#{brandName},#{companyName},#{ordered},#{description},#{status},#{typeId});
+    </insert>
+    <update id="update">
+        update tb_brand
+        set brand_name = #{brandName},
+            company_name = #{companyName},
+            ordered = #{ordered},
+            description = #{description},
+            status = #{status},
+            type_id = #{typeId}
+        where id = #{id};
+    </update>
+    <delete id="delete">
+        delete from tb_brand where id = #{id};
+    </delete>
+    <select id="getById" resultMap="brandMap">
+        select * from tb_brand where id = #{id};
+    </select>
+    <select id="getAll" resultMap="brandMap">
         select * from tb_brand
+    </select>
+    <select id="getByBrandName" resultMap="brandMap">
+        select * from tb_brand
+        where brand_name like concat('%',#{brandName},'%');
     </select>
 
 </mapper>

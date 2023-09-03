@@ -11,11 +11,34 @@ import java.util.List;
 @Service
 public class BrandServiceImpl implements BrandService {
     @Autowired
+    //调用接口 @Service @Autowired 自动装配
     private BrandMapper brandMapper;
 
-    @Override
+    public int save(Brand brand) {
+        int save = brandMapper.save(brand);
+        return save;
+    }
+
+    public int update(Brand brand) {
+        int update = brandMapper.update(brand);
+        return update;
+    }
+
+    public int delete(Integer id) {
+        int delete = brandMapper.delete(id);
+        return delete;
+    }
+
+    public Brand getById(Integer id) {
+        return brandMapper.getById(id);
+    }
+
     public List<Brand> getAll() {
-        List<Brand> all = brandMapper.selectAll();
-        return all;
+        return brandMapper.getAll();
+    }
+
+    public List<Brand> getByBrandName(Brand brand) {
+        String brandName = brand.getBrandName();
+        return brandMapper.getByBrandName(brandName);
     }
 }

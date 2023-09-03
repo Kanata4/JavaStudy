@@ -12,12 +12,14 @@ public class MyBatisConfig {
     public SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource){
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
+        //类型别名的扫描包
         factoryBean.setTypeAliasesPackage("com.geekaca.ssm.domain");
         return factoryBean;
     }
 
     @Bean
     public MapperScannerConfigurer mapperScannerConfigurer(){
+        //扫描映射
         MapperScannerConfigurer msc = new MapperScannerConfigurer();
         msc.setBasePackage("com.geekaca.ssm.dao");
         return msc;

@@ -16,7 +16,7 @@ import java.util.List;
 //设置Spring环境对应的配置类, 测试service层的逻辑，不需要SpringMVC
 @ContextConfiguration(classes = SpringConfig.class)
 public class TestService {
-
+    //自动装配
     @Autowired
     private BrandService brandService;
 
@@ -25,5 +25,20 @@ public class TestService {
         List<Brand> all = brandService.getAll();
         Assert.assertNotNull(all);
         Assert.assertTrue(all.size() > 0);
+        System.out.println(all);
+    }
+
+    @Test
+    public void testGetById(){
+        Brand brand = brandService.getById(1);
+        System.out.println(brand);
+    }
+
+    @Test
+    public void testGetByBrandName() {
+        Brand brand = new Brand();
+        brand.setBrandName("B");
+        List<Brand> brands = brandService.getByBrandName(brand);
+        System.out.println(brands);
     }
 }
