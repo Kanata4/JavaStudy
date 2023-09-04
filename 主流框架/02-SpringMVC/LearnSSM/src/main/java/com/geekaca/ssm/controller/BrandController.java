@@ -18,32 +18,62 @@ public class BrandController {
     private BrandService brandService;
 
     @RequestMapping("/save")
-    public int save(@RequestBody Brand brand) {
-        return brandService.save(brand);
+    public Result save(@RequestBody Brand brand) {
+        int save = brandService.save(brand);
+        Integer code = (save > 0 ? Code.SAVE_OK : Code.SAVE_ERR);
+        String msg = save > 0 ? "" : "保存失败";
+        Result result = new Result(code,msg,save);
+        return result;
     }
 
     @RequestMapping("/update")
-    public int update(@RequestBody Brand brand) {
-        return brandService.update(brand);
+    public Result update(@RequestBody Brand brand) {
+        int update = brandService.update(brand);
+        Integer code = (update > 0 ? Code.UPDATE_OK : Code.UPDATE_ERR);
+        String msg = update > 0 ? "" : "更新失败";
+        Result result = new Result(code,msg,update);
+        return result;
     }
 
     @RequestMapping("/delete/{id}")
-    public int delete(@PathVariable("id") Integer id) {
-        return brandService.delete(id);
+    public Result delete(@PathVariable("id") Integer id) {
+        int delete = brandService.delete(id);
+        Integer code = (delete > 0 ? Code.DELETE_OK : Code.DELETE_ERR);
+        String msg = delete > 0 ? "" : "删除失败";
+        Result result = new Result(code,msg,delete);
+        return result;
     }
 
     @RequestMapping("/get/{id}")
-    public Brand getById(@PathVariable("id") Integer id) {
-        return brandService.getById(id);
+    public Result getById(@PathVariable("id") Integer id) {
+        Brand brand = brandService.getById(id);
+        Integer code = (brand ==  null  ? Code. GET_ERR: Code.GET_OK);
+        String msg = (brand ==  null  ? "" : "查询失败");
+        Result result = new Result(code,msg,brand);
+        return result;
     }
 
     @RequestMapping("/all")
-    public List<Brand> getAll() {
-        return brandService.getAll();
+    public Result getAll(Integer pageNo, Integer cntPerPage) {
+        if (pageNo == null){
+            pageNo = 1;
+        }
+        if (cntPerPage == null){
+            cntPerPage = 10;
+        }
+        List<Brand> brands = brandService.getAll(pageNo,cntPerPage);
+        Integer code = (brands ==  null  ? Code. GET_ERR: Code.GET_OK);
+        String msg = (brands ==  null  ? "" : "查询失败");
+        Result result = new Result(code,msg,brands);
+        return result;
     }
 
     @RequestMapping("/getByName")
-    public List<Brand> getByBrandName(@RequestBody Brand brand) {
-        return brandService.getByBrandName(brand);
+    public Result getByBrandName(@RequestBody Brand brand) {
+        List<Brand> brands = brandService.getByBrandName(brand);
+        Integer code = (brands ==  null  ? Code. GET_ERR: Code.GET_OK);
+        String msg = (brands ==  null  ? "" : "查询失败");
+        Result result = new Result(code,msg,brands);
+        return result;
     }
 }

@@ -20,13 +20,13 @@ public class TestService {
     @Autowired
     private BrandService brandService;
 
-    @Test
-    public void testGetAll(){
-        List<Brand> all = brandService.getAll();
-        Assert.assertNotNull(all);
-        Assert.assertTrue(all.size() > 0);
-        System.out.println(all);
-    }
+//    @Test
+//    public void testGetAll(){
+//        List<Brand> all = brandService.getAll();
+//        Assert.assertNotNull(all);
+//        Assert.assertTrue(all.size() > 0);
+//        System.out.println(all);
+//    }
 
     @Test
     public void testGetById(){

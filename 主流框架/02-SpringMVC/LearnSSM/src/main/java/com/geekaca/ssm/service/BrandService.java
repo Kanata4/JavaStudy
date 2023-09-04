@@ -1,6 +1,7 @@
 package com.geekaca.ssm.service;
 
 import com.geekaca.ssm.domain.Brand;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public interface BrandService {
      * 查询所有
      * @return
      */
-    public List<Brand> getAll();
+    public List<Brand> getAll(Integer pageNo, Integer pageSize);
 
     /**
      * 根据品牌名查询

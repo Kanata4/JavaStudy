@@ -32,10 +32,16 @@
     </select>
     <select id="getAll" resultMap="brandMap">
         select * from tb_brand
+        limit #{start}, #{pageSizee};
     </select>
     <select id="getByBrandName" resultMap="brandMap">
         select * from tb_brand
-        where brand_name like concat('%',#{brandName},'%');
+        <where>
+            <if test="brand.brandName != null and brand.brandName != ''">
+                brand_name like concat('%',#{brandName},'%');
+            </if>
+        </where>
+        limit #{start}, #{pageSize};
     </select>
 
 </mapper>

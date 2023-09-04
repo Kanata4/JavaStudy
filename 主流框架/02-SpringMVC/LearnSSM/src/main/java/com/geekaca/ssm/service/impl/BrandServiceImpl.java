@@ -33,8 +33,9 @@ public class BrandServiceImpl implements BrandService {
         return brandMapper.getById(id);
     }
 
-    public List<Brand> getAll() {
-        return brandMapper.getAll();
+    public List<Brand> getAll(Integer pageNo, Integer pageSize) {
+        int start = (pageNo - 1) * pageSize;
+        return brandMapper.getAll(start,pageSize);
     }
 
     public List<Brand> getByBrandName(Brand brand) {
