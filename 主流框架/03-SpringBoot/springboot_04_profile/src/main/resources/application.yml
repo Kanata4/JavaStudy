@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: test
+---
+#kaifa
+spring:
+  profiles: dev
+server:
+  port: 80
+
+---
+#shengchan
+spring:
+  profiles: pro
+server:
+  port: 81
+
+---
+#ceshi
+spring:
+  profiles:test
+server:
+  port: 82

@@ -1,0 +1,12 @@
+lesson: SpringBoot
+server:
+  port: 80
+
+enterprise:
+  name: geekaca
+  age: 16
+  tel: 2342315
+  subject:
+    - java
+    - 前端
+    - 大数据
