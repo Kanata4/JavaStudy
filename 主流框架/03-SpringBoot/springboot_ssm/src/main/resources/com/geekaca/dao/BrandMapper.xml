@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.geekaca.dao.BrandMapper">
+
+    <resultMap id="brandMap" type="com.geekaca.domain.Brand">
+        <id property="id" column="id"/>
+        <result property="brandName" column="brand_name"/>
+        <result property="companyName" column="company_name"/>
+        <result property="typeId" column="type_id"/>
+    </resultMap>
+    <insert id="save">
+        insert into tb_brand
+        values (null ,#{brandName},#{companyName},#{ordered},#{description},#{status},#{typeId});
+    </insert>
+    <update id="update">
+        update tb_brand
+        set brand_name = #{brandName},
+            company_name = #{companyName},
+            ordered = #{ordered},
+            description = #{description},
+            status = #{status},
+            type_id = #{typeId}
+        where id = #{id};
+    </update>
+    <delete id="delete">
+        delete from tb_brand where id = #{id};
+    </delete>
+    <select id="getById" resultMap="brandMap">
+        select * from tb_brand where id = #{id};
+    </select>
+    <select id="getAll" resultMap="brandMap">
+        select * from tb_brand
+        limit #{start}, #{pageSizee};
+    </select>
+    <select id="getByBrandName" resultMap="brandMap">
+        select * from tb_brand
+        <where>
+            <if test="brand.brandName != null and brand.brandName != ''">
+                brand_name like concat('%',#{brandName},'%');
+            </if>
+        </where>
+        limit #{start}, #{pageSize};
+    </select>
+
+</mapper>
