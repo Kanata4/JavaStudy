@@ -3,6 +3,8 @@ package com.geekaca.news.mapper;
 import com.geekaca.news.domain.News;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
 * @author kanata
 * @description 针对表【tb_news】的数据库操作Mapper
@@ -23,5 +25,12 @@ public interface NewsMapper {
     int updateByPrimaryKeySelective(News record);
 
     int updateByPrimaryKey(News record);
+
+    // 前台页面 新闻列表查询 泛型约束
+    List<News> selectAll();
+
+    News selectById(Long id);
+
+
 
 }
