@@ -89,6 +89,9 @@ public class NewsApplicationTests {
         List<News> newsList = newsMapper.selectAll();
         Assertions.assertNotNull(newsList);
         Assertions.assertTrue(newsList.size() > 0);
+        newsList.forEach((news)->{
+            System.out.println(news);
+        });
     }
 
     /**
