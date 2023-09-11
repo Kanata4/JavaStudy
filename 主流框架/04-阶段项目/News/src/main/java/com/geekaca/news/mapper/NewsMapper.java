@@ -31,6 +31,8 @@ public interface NewsMapper {
 
     News selectById(Long id);
 
+    //模糊查询 根据
+    List<News> selectByName(News news);
 
 
 }

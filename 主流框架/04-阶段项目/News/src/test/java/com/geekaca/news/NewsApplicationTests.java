@@ -107,4 +107,17 @@ public class NewsApplicationTests {
         Assertions.assertTrue(commentList.size() > 0);
         System.out.println(commentList);
     }
+
+    @Test
+    public void testSelectByName(){
+        News news = new News();
+        news.setNewsTitle("hello");
+        news.setNewsContent("hello");
+        List<News> newsList = newsMapper.selectByName(news);
+        Assertions.assertNotNull(newsList);
+        Assertions.assertTrue(newsList.size() > 0);
+        newsList.forEach((news1)->{
+            System.out.println(news1);
+        });
+    }
 }
