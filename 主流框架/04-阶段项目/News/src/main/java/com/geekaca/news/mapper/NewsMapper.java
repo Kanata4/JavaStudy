@@ -11,6 +11,7 @@ import java.util.List;
 * @createDate 2023-09-08 15:24:32
 * @Entity com.geekaca.news.domain.News
 */
+// TODO:添加@Mapper
 @Mapper
 public interface NewsMapper {
 
