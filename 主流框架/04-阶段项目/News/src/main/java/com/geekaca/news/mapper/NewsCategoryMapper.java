@@ -2,6 +2,8 @@ package com.geekaca.news.mapper;
 
 import com.geekaca.news.domain.NewsCategory;
 
+import java.util.List;
+
 /**
 * @author kanata
 * @description 针对表【tb_news_category】的数据库操作Mapper
@@ -22,4 +24,5 @@ public interface NewsCategoryMapper {
 
     int updateByPrimaryKey(NewsCategory record);
 
+    List<NewsCategory> findAll();
 }

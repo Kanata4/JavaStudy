@@ -1,4 +1,4 @@
-package com.geekaca.news.util;
+package com.geekaca.news.utils;
 
 import java.io.Serializable;
 

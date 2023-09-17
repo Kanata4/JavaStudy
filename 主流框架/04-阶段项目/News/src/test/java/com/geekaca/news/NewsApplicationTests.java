@@ -4,11 +4,13 @@ import cn.hutool.crypto.SecureUtil;
 import com.geekaca.news.domain.News;
 import com.geekaca.news.domain.NewsComment;
 import com.geekaca.news.mapper.NewsMapper;
+import com.geekaca.news.service.NewsService;
 import org.apache.catalina.security.SecurityUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,11 +18,15 @@ import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
+//单元测试并不会真的插入数据 修改 删除 放在事务之中 回滚
+@Transactional
 public class NewsApplicationTests {
 
     @Autowired
     private NewsMapper newsMapper;
 
+    @Autowired
+    private NewsService newsService;
     /**
      * 测试查询
      */
@@ -128,5 +134,18 @@ public class NewsApplicationTests {
         String str = "123456";
         String target = SecureUtil.md5(str);
         System.out.println(target);
+    }
+
+    @Test
+    public void testAddNews(){
+        News news = new News();
+        news.setNewsTitle("测试");
+        news.setNewsCategoryId(25);
+        news.setNewsContent("18点开会 学习Java");
+        news.setNewsTags("通知，工作，公司,Java");
+        boolean isSaveOk = newsService.saveNews(news);
+        Assertions.assertTrue(isSaveOk);
+
+        //验证符合预期
     }
 }

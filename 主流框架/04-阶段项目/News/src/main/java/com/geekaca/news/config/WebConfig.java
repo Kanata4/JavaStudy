@@ -1,6 +1,6 @@
 package com.geekaca.news.config;
 
-import com.geekaca.news.util.NewsConstants;
+import com.geekaca.news.utils.NewsConstants;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

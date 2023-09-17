@@ -1,11 +1,13 @@
 package com.geekaca.news.service;
 
 import com.geekaca.news.domain.News;
-import com.geekaca.news.util.PageResult;
+import com.geekaca.news.utils.PageResult;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
 
+@Transactional
 public interface NewsService {
     /**
      * 前台页面 新闻列表查询
@@ -40,4 +42,6 @@ public interface NewsService {
      * @return
      */
     PageResult getPageNews(Integer pageNo, Integer pageSize);
+
+    boolean saveNews(News news);
 }
