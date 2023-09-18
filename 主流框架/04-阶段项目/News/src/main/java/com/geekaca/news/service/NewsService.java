@@ -2,6 +2,7 @@ package com.geekaca.news.service;
 
 import com.geekaca.news.domain.News;
 import com.geekaca.news.utils.PageResult;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -44,4 +45,10 @@ public interface NewsService {
     PageResult getPageNews(Integer pageNo, Integer pageSize);
 
     boolean saveNews(News news);
+
+    /**
+     * 把文章的访问量+1
+     * @return
+     */
+    int updateNewsViews(@Param("newsId") Long newsId);
 }

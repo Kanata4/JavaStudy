@@ -92,8 +92,9 @@ public class NewsController {
          */
         News newsWithComments = newsService.selectById(newsId);
         req.setAttribute("blogDetailVO",newsWithComments);
-        req.setAttribute("pageName", "首页");
+        req.setAttribute("pageName", "详情");
         req.setAttribute("configurations", configService.getAllConfigs());
+        int i = newsService.updateNewsViews(newsId);
         return "blog/" + theme + "/detail";
     }
 }

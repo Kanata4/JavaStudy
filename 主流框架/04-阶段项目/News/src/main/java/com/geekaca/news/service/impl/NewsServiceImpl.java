@@ -101,4 +101,10 @@ public class NewsServiceImpl implements NewsService {
 
         return true;
     }
+
+    @Override
+    public int updateNewsViews(Long newsId) {
+        int i = newsMapper.increaseViews(newsId);
+        return i;
+    }
 }

@@ -203,7 +203,7 @@
                  tb_news nc
                      LEFT JOIN tb_news_comment tnc ON nc.news_id = tnc.news_id) nw
         WHERE
-            nw.news_id = 6
+            nw.news_id = #{newsId}
         ORDER BY nw.comment_create_time DESC
     </select>
     <select id="selectByName" resultMap="BaseResultMap">
@@ -246,4 +246,9 @@
     <select id="selectNewsCount" resultType="java.lang.Integer">
         select count(*) from tb_news;
     </select>
+
+    <update id="increaseViews">
+        update tb_news set news_views = news_views + 1
+        where news_id = #{newsId}
+    </update>
 </mapper>
