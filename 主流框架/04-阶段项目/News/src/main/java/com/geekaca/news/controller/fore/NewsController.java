@@ -77,4 +77,23 @@ public class NewsController {
         return "newsDetail";
     }
 
+    /**
+     * 详情页
+     *
+     * @return
+     */
+    @GetMapping({"/blog/{newsId}", "/article/{newsId}"})
+    public String detail(HttpServletRequest req,
+                         @PathVariable("newsId") Long newsId, @RequestParam(value = "commentPage",
+            required = false, defaultValue = "1") Integer commentPage) {
+        /**
+         * 1. 查询新闻详情，带出评论
+         * 2. 更新新闻浏览量 + 1
+         */
+        News newsWithComments = newsService.selectById(newsId);
+        req.setAttribute("blogDetailVO",newsWithComments);
+        req.setAttribute("pageName", "首页");
+        req.setAttribute("configurations", configService.getAllConfigs());
+        return "blog/" + theme + "/detail";
+    }
 }

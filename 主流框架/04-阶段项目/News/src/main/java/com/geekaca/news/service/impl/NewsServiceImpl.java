@@ -32,7 +32,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     public News selectById(Long id) {
-        News news = newsMapper.selectById(id);
+        News news = newsMapper.selectNewsAndCommentsById(id);
         return news;
     }
 
