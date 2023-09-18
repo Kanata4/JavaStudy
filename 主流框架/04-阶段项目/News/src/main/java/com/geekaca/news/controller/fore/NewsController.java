@@ -17,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class NewsController {
 
     @GetMapping("/page/{pageNum}")
     private String page(HttpServletRequest req,@PathVariable("pageNum") int pageNum){
-        PageResult pageNews = newsService.getPageNews(pageNum, 5);
+        PageResult pageNews = newsService.getPageNews(pageNum, 5, null);
         req.setAttribute("blogPageResult", pageNews);
         //最新发布
         req.setAttribute("newBlogs", 0);

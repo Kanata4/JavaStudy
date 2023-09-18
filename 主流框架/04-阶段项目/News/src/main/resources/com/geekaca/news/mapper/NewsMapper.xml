@@ -240,11 +240,24 @@
         FROM tb_news nw,
              tb_news_category nc
         WHERE nw.news_category_id = nc.category_id
+        <if test="keyword != null and keyword != ''">
+            and (nw.news_title like concat('%', #{keyword}, '%')
+            or  nc.category_name like concat('%', #{keyword}, '%'))
+        </if>
         ORDER BY nw.create_time DESC
         limit #{start},#{recordSize}
     </select>
     <select id="selectNewsCount" resultType="java.lang.Integer">
-        select count(*) from tb_news;
+        SELECT
+               count(*)
+        FROM
+             tb_news nw,
+             tb_news_category nc
+        WHERE nw.news_category_id = nc.category_id
+        <if test="keyword != null and keyword != ''">
+            and (nw.news_title like concat('%', #{keyword}, '%') or
+            nc.category_name like concat('%', #{keyword}, '%'))
+        </if>
     </select>
 
     <update id="increaseViews">

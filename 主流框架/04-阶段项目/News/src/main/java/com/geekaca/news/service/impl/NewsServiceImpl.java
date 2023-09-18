@@ -47,10 +47,10 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public PageResult getPageNews(Integer pageNo, Integer pageSize) {
+    public PageResult getPageNews(Integer pageNo, Integer pageSize, String keyword) {
         int start = (pageNo - 1) * pageSize;
-        List<News> newsList = newsMapper.selectByPage(start, pageSize);
-        int count = newsMapper.selectNewsCount();
+        List<News> newsList = newsMapper.selectByPage(start, pageSize,keyword);
+        int count = newsMapper.selectNewsCount(keyword);
         PageResult pageResult = new PageResult(newsList, count, pageSize, pageNo);
         return pageResult;
     }

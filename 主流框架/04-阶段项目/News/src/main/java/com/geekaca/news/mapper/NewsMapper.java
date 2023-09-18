@@ -43,11 +43,13 @@ public interface NewsMapper {
      * 发送sql查询 数据 limit (页码 - 1) * 每页条数
      * @param start  limit 第一个参数
      * @param recordSize 去多少条数据
+     * @param keyword
      * @return
      */
-    List<News> selectByPage(@Param("start") Integer start, @Param("recordSize") Integer recordSize);
+    List<News> selectByPage(@Param("start") Integer start,
+                            @Param("recordSize") Integer recordSize, @Param("keyword") String keyword);
     //查询数量
-    int selectNewsCount();
+    int selectNewsCount(@Param("keyword") String keyword);
 
     int increaseViews(Long newsId);
 }

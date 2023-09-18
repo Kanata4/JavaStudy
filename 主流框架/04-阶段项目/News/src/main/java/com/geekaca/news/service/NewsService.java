@@ -40,9 +40,10 @@ public interface NewsService {
      * 查询新闻列表 带有分页
      * @param pageNo 页码 第几页
      * @param pageSize 每页记录条数
+     * @param keyword
      * @return
      */
-    PageResult getPageNews(Integer pageNo, Integer pageSize);
+    PageResult getPageNews(Integer pageNo, Integer pageSize, String keyword);
 
     boolean saveNews(News news);
 

@@ -35,8 +35,9 @@ public class BGNewsController {
     @GetMapping("/blogs/list")
     // 结果会被转化为JSON结构
     @ResponseBody
-    public Result newsList(@RequestParam("page") Integer page,@RequestParam("limit") Integer limit){
-        PageResult pageNewsRs = newsService.getPageNews(page, limit);
+    public Result newsList(@RequestParam("page") Integer page,@RequestParam("limit") Integer limit,
+                           @RequestParam(name = "keyword", required = false) String keyword){
+        PageResult pageNewsRs = newsService.getPageNews(page, limit,keyword);
         Result result = new Result();
         result.setResultCode(NewsConstants.RESULT_OK);
         result.setData(pageNewsRs);
