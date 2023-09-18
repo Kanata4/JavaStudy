@@ -40,8 +40,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Boolean checkDone(Integer[] ids) {
-//        return newsCommentMapper.checkDone(ids);
-        return false;
+        return newsCommentMapper.checkDone(ids);
     }
 
     @Override

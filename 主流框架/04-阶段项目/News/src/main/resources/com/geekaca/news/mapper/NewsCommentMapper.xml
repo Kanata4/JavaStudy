@@ -137,19 +137,30 @@
         where   comment_id = #{commentId,jdbcType=BIGINT} 
     </update>
 
-    <select id="findNewsCommentList" resultType="com.geekaca.news.domain.NewsComment">
+    <select id="findNewsCommentList" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from tb_news_comment
-        <if test="newsId != null">
-            and news_id = #{newsId}
-        </if>
-        <if test="commentStatus != null">
-            and comment_status = #{commentStatus}
-        </if>
+        <where>
+            <if test="newsId != null">
+                and news_id = #{newsId}
+            </if>
+            <if test="commentStatus != null">
+                and comment_status = #{commentStatus}
+            </if>
+        </where>
         order by comment_id desc
         <if test="pageNo != null and pageSize != null">
             limit #{pageNo},#{pageSize}
         </if>
     </select>
+
+    <update id="checkDone">
+        update tb_news_comment
+        set comment_status = 1 where comment_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        and comment_status = 0
+    </update>
 </mapper>
