@@ -5,6 +5,7 @@ import com.geekaca.news.domain.News;
 import com.geekaca.news.domain.NewsComment;
 import com.geekaca.news.mapper.NewsMapper;
 import com.geekaca.news.service.NewsService;
+import org.apache.catalina.security.SecurityUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,7 +107,7 @@ public class NewsApplicationTests {
      */
     @Test
     public void testSelectById(){
-        News news = newsMapper.selectNewsAndCommentsById(6L);
+        News news = newsMapper.selectById(6L);
         Assertions.assertNotNull(news);
         System.out.println(news);
         List<NewsComment> commentList = news.getCommentList();
