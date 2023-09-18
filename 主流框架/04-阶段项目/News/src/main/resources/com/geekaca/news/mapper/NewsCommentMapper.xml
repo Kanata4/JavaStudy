@@ -136,4 +136,20 @@
             is_deleted =  #{isDeleted,jdbcType=TINYINT}
         where   comment_id = #{commentId,jdbcType=BIGINT} 
     </update>
+
+    <select id="findNewsCommentList" resultType="com.geekaca.news.domain.NewsComment">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_news_comment
+        <if test="newsId != null">
+            and news_id = #{newsId}
+        </if>
+        <if test="commentStatus != null">
+            and comment_status = #{commentStatus}
+        </if>
+        order by comment_id desc
+        <if test="pageNo != null and pageSize != null">
+            limit #{pageNo},#{pageSize}
+        </if>
+    </select>
 </mapper>
