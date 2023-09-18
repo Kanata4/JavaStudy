@@ -77,7 +77,6 @@ public class NewsController {
         return "newsDetail";
     }
 
-<<<<<<< HEAD
     /**
      * 详情页
      *
@@ -98,6 +97,4 @@ public class NewsController {
         int i = newsService.updateNewsViews(newsId);
         return "blog/" + theme + "/detail";
     }
-=======
->>>>>>> parent of fd1efc9... 前台，查看文章的详情
 }
