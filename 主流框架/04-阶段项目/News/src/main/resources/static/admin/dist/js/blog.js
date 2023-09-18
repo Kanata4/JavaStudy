@@ -16,7 +16,7 @@ $(function () {
         rowList: [10, 20, 50],
         styleUI: 'Bootstrap',
         loadtext: '信息读取中...',
-        rownumbers: true,
+        rownumbers: false,
         rownumWidth: 20,
         autowidth: true,
         multiselect: true,

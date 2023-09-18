@@ -3,6 +3,7 @@ package com.geekaca.news.controller.fore;
 import com.geekaca.news.domain.News;
 import com.geekaca.news.service.ConfigService;
 import com.geekaca.news.service.NewsService;
+import com.geekaca.news.utils.PageResult;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,40 +18,37 @@ import java.util.List;
 //注解 控制器类
 @Controller
 @Slf4j
-@RequestMapping("/news")
 public class NewsController {
     @Autowired
     private NewsService newsService;
     @Autowired
     private ConfigService configService;
+    public static String theme = "amaze";
 
     @GetMapping({"/","/index","/index.html"})
     public String index(HttpServletRequest req) {
         return this.page(req,1);
     }
 
-    @GetMapping("{page}/{pageNum}")
+    @GetMapping("/page/{pageNum}")
     private String page(HttpServletRequest req,@PathVariable("pageNum") int pageNum){
-        newsService.getPageNews(pageNum,3);
-        req.setAttribute("blogPageResult", 0);
+        PageResult pageNews = newsService.getPageNews(pageNum, 8);
+        req.setAttribute("blogPageResult", pageNews);
         req.setAttribute("newBlogs", 0);
-
         req.setAttribute("hotBlogs", 0);
-
         req.setAttribute("hotTags", 0);
         req.setAttribute("pageName", "首页");
         req.setAttribute("configurations", configService.getAllConfigs());
-        return "blog/"  + "/index";
+        return "blog/" + theme + "/index";
     }
 
     //指向 新闻管理页面
-    @GetMapping("blogs")
+    @GetMapping("/blogs")
     public String List(HttpServletRequest req) {
         //为了传递值给前端页面 页面根据他来决定左侧导航菜单高亮 显示哪一个
         req.setAttribute("path","blogs");
         return "admin/blog";
     }
-
 
     //传递集合
     @RequestMapping("/all")

@@ -80,7 +80,7 @@ $(function () {
         }
     });
 });
-// 新增和编辑文章的 保存按钮被点击后 触发函数
+
 $('#confirmButton').click(function () {
     var blogTitle = $('#blogName').val();
     var blogSubUrl = $('#blogSubUrl').val();
