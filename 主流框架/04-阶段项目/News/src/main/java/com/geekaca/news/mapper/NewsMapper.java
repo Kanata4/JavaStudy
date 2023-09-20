@@ -51,5 +51,5 @@ public interface NewsMapper {
     //查询数量
     int selectNewsCount(@Param("keyword") String keyword);
 
-    int increaseViews(Long newsId);
+    int increaseViews(@Param("newsId") Long newsId);
 }
