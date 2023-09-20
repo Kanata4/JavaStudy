@@ -82,7 +82,7 @@ public class NewsController {
      *
      * @return
      */
-    @GetMapping({"/search/{keyword}/{page}"})
+    @GetMapping({"/search/{keyword}/{pageNum}"})
     public String search(HttpServletRequest req,@PathVariable("pageNum") int pageNum, @PathVariable("keyword") String keyword) {
         PageResult pageNews = newsService.getPageNews(pageNum, 5, keyword);
         req.setAttribute("blogPageResult", pageNews);
