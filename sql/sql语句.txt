@@ -1,0 +1,35 @@
+1.统计各个班级的学生人数
+SELECT 
+    class_name, COUNT(*)
+FROM
+    tb_stu stu
+        LEFT JOIN
+    tb_stu_class cls ON stu.class_id = cls.class_id
+GROUP BY class_name
+
+2.计算某一个班级的 英语平均成绩
+SELECT 
+    cls.class_id,
+    cls.class_name,
+    grd.subject,
+    SUM(grd.grade),
+    AVG(grd.grade)
+FROM
+    tb_stu stu
+        LEFT JOIN
+    tb_stu_grade grd ON stu.stu_id = grd.stu_id
+        LEFT JOIN
+    tb_stu_class cls ON stu.class_id = cls.class_id
+WHERE
+    grd.subject = '英语'
+GROUP BY cls.class_id
+
+3.查询某个学生的各个科目考试成绩
+SELECT 
+    stu_name, grd.subject, grd.grade
+FROM
+    tb_stu stu
+        LEFT JOIN
+    tb_stu_grade grd ON stu.stu_id = grd.stu_id
+WHERE
+    stu_name = '小明'
