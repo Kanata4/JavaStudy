@@ -1,0 +1,20 @@
+1，查询某个学生的某段时间的 出勤和作业情况
+
+SELECT 
+    stu.stu_name, attend_time, attend_status, course_name, grade
+FROM
+    tb_stu_student stu,
+    tb_stu_attend atd,
+    tb_stu_homework hw
+        INNER JOIN
+    tb_stu_course cs ON hw.course_id = cs.course_id
+WHERE
+    stu.stu_name = '小明' AND cs.course_id = 1
+        AND DATEDIFF(atd.attend_time, '2023-11-11') > 0
+        AND DATEDIFF(atd.attend_time, '2023-11-15') < 0
+
+2，查询某个学生都学过哪些课程
+
+
+3，查询某个班级所有学生情况
+4，查询当前处于 比如 ：Javaweb阶段的学生
