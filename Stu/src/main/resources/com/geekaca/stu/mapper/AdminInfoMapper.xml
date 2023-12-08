@@ -2,54 +2,59 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.geekaca.stu.mapper.StudentInfoMapper">
+<mapper namespace="com.geekaca.stu.mapper.AdminInfoMapper">
 
-    <resultMap id="BaseResultMap" type="com.geekaca.stu.domain.StudentInfo">
+    <resultMap id="BaseResultMap" type="com.geekaca.stu.domain.AdminInfo">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="password" column="password" jdbcType="VARCHAR"/>
             <result property="gender" column="gender" jdbcType="VARCHAR"/>
             <result property="age" column="age" jdbcType="INTEGER"/>
-            <result property="code" column="code" jdbcType="INTEGER"/>
-            <result property="classId" column="class_id" jdbcType="VARCHAR"/>
+            <result property="phone" column="phone" jdbcType="INTEGER"/>
+            <result property="level" column="level" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,name,password,
-        gender,age,code,
-        class_id
+        gender,age,phone,
+        level
     </sql>
+
 
     <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
-        from student_info
+        from admin_info
         where  id = #{id,jdbcType=BIGINT} 
     </select>
 
+    <select id="findByNameAndPassword" resultType="com.geekaca.stu.domain.AdminInfo">
+        select * from admin_info where name = #{name} and password = #{password}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from student_info
+        delete from admin_info
         where  id = #{id,jdbcType=BIGINT} 
     </delete>
-    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.geekaca.stu.domain.StudentInfo" useGeneratedKeys="true">
-        insert into student_info
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.geekaca.stu.domain.AdminInfo" useGeneratedKeys="true">
+        insert into admin_info
         ( id,name,password
-        ,gender,age,code
-        ,class_id)
+        ,gender,age,phone
+        ,level)
         values (#{id,jdbcType=BIGINT},#{name,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR}
-        ,#{gender,jdbcType=VARCHAR},#{age,jdbcType=INTEGER},#{code,jdbcType=INTEGER}
-        ,#{classId,jdbcType=VARCHAR})
+        ,#{gender,jdbcType=VARCHAR},#{age,jdbcType=INTEGER},#{phone,jdbcType=INTEGER}
+        ,#{level,jdbcType=INTEGER})
     </insert>
-    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.geekaca.stu.domain.StudentInfo" useGeneratedKeys="true">
-        insert into student_info
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.geekaca.stu.domain.AdminInfo" useGeneratedKeys="true">
+        insert into admin_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
                 <if test="id != null">id,</if>
                 <if test="name != null">name,</if>
                 <if test="password != null">password,</if>
                 <if test="gender != null">gender,</if>
                 <if test="age != null">age,</if>
-                <if test="code != null">code,</if>
-                <if test="classId != null">class_id,</if>
+                <if test="phone != null">phone,</if>
+                <if test="level != null">level,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
                 <if test="id != null">#{id,jdbcType=BIGINT},</if>
@@ -57,12 +62,12 @@
                 <if test="password != null">#{password,jdbcType=VARCHAR},</if>
                 <if test="gender != null">#{gender,jdbcType=VARCHAR},</if>
                 <if test="age != null">#{age,jdbcType=INTEGER},</if>
-                <if test="code != null">#{code,jdbcType=INTEGER},</if>
-                <if test="classId != null">#{classId,jdbcType=VARCHAR},</if>
+                <if test="phone != null">#{phone,jdbcType=INTEGER},</if>
+                <if test="level != null">#{level,jdbcType=INTEGER},</if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.geekaca.stu.domain.StudentInfo">
-        update student_info
+    <update id="updateByPrimaryKeySelective" parameterType="com.geekaca.stu.domain.AdminInfo">
+        update admin_info
         <set>
                 <if test="name != null">
                     name = #{name,jdbcType=VARCHAR},
@@ -76,24 +81,24 @@
                 <if test="age != null">
                     age = #{age,jdbcType=INTEGER},
                 </if>
-                <if test="code != null">
-                    code = #{code,jdbcType=INTEGER},
+                <if test="phone != null">
+                    phone = #{phone,jdbcType=INTEGER},
                 </if>
-                <if test="classId != null">
-                    class_id = #{classId,jdbcType=VARCHAR},
+                <if test="level != null">
+                    level = #{level,jdbcType=INTEGER},
                 </if>
         </set>
         where   id = #{id,jdbcType=BIGINT} 
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.geekaca.stu.domain.StudentInfo">
-        update student_info
+    <update id="updateByPrimaryKey" parameterType="com.geekaca.stu.domain.AdminInfo">
+        update admin_info
         set 
             name =  #{name,jdbcType=VARCHAR},
             password =  #{password,jdbcType=VARCHAR},
             gender =  #{gender,jdbcType=VARCHAR},
             age =  #{age,jdbcType=INTEGER},
-            code =  #{code,jdbcType=INTEGER},
-            class_id =  #{classId,jdbcType=VARCHAR}
+            phone =  #{phone,jdbcType=INTEGER},
+            level =  #{level,jdbcType=INTEGER}
         where   id = #{id,jdbcType=BIGINT} 
     </update>
 </mapper>
