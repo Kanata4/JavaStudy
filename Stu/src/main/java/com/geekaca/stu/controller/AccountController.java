@@ -2,13 +2,17 @@ package com.geekaca.stu.controller;
 
 import com.geekaca.stu.common.Result;
 import com.geekaca.stu.domain.Account;
-import com.geekaca.stu.service.AdminInfoService;
+import com.geekaca.stu.service.impl.AdminInfoService;
+import com.geekaca.stu.service.impl.AdminInfoServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.http.HttpRequest;
 
 
 @RestController
@@ -20,7 +24,7 @@ public class AccountController {
 
     @PostMapping("/login")
     //请求体 不止一个参数
-    public Result login(@RequestBody Account user) {
+    public Result login(@RequestBody Account user, HttpServletRequest request) {
 
         //校验
         if (ObjectUtils.isEmpty(user.getName()) ||
@@ -41,6 +45,9 @@ public class AccountController {
             // 学生登录
         }
 
-        return Result.success();
+        // 在session存用户信息
+        request.getSession().setAttribute("user",loginUser);
+
+        return Result.success(loginUser);
     }
 }

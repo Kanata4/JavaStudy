@@ -11,7 +11,7 @@ import javax.persistence.*;
  */
 @Data
 @Table(name = "admin_info")
-public class AdminInfo implements Serializable {
+public class AdminInfo extends Account {
     /**
      * ID
      */
